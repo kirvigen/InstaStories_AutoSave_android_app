@@ -14,25 +14,36 @@ class InstagramRepositoryImpl(
     private val okHttpClientCoroutine: OkHttpClientCoroutine
 ) : InstagramRepository {
 
-    private val instaCookies: String
-        get() = CookieManager.getInstance()?.getCookie("https://www.instagram.com/") ?: ""
-
     private val headers: MutableMap<String, String> = mutableMapOf(
         "user-agent" to USER_AGENT_DEFAULT,
-        "cookie" to instaCookies
+        "cookie" to getInstagramCookies()
     )
 
-    override fun getInstagramCookies(): String = instaCookies
+    override fun getInstagramCookies(): String =
+        CookieManager.getInstance()?.getCookie("https://www.instagram.com/") ?: ""
 
-    override fun getCurrentProfile(): Profile {
-        TODO("Not yet implemented")
+    override suspend fun getCurrentProfile(): Profile? {
+        val response = okHttpClientCoroutine.newCall(
+            OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/", headers)
+        ).toStrResponse() ?: ""
+
+        val jsonString = response.split("window._sharedData =")[1].split(";</script>")[0]
+        val profileData = JSONObject(jsonString)
+            .getJSONObject("config")
+            .getJSONObject("viewer")
+        val photo = profileData.getString("profile_pic_url_hd")
+        val username = profileData.getString("username")
+        val description = profileData.getString("biography")
+        val id = profileData.getString("id")
+        return Profile(id, photo, username, description)
     }
 
-    override fun getStories(userId: String) {
+    override suspend fun getStories(userId: String): List<String> {
+        TODO("todo")
     }
 
-    override fun getFollowers(): List<Profile> {
-        TODO("блин капец потом")
+    override suspend fun getFollowers(): List<Profile> {
+        TODO("todo")
     }
 
     override suspend fun getUserId(nickname: String): MyResult {

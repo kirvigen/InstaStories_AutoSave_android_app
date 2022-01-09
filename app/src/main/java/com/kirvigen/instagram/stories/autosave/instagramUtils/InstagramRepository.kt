@@ -5,13 +5,13 @@ import com.kirvigen.instagram.stories.autosave.utils.MyResult
 
 interface InstagramRepository {
 
-    fun getStories(userId: String)
+    suspend fun getStories(userId: String): List<String>
 
     fun getInstagramCookies(): String
 
-    fun getFollowers(): List<Profile>
+    suspend fun getFollowers(): List<Profile>
 
-    fun getCurrentProfile(): Profile
+    suspend fun getCurrentProfile(): Profile?
 
     suspend fun getUserId(nickname: String): MyResult
 }
