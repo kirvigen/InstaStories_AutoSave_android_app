@@ -58,5 +58,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
 
-
+    def koin_version = '2.2.2'
+    //koin
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-scope:$koin_version"
 }

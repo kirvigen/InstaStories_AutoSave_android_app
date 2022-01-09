@@ -4,7 +4,7 @@ import android.webkit.CookieManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 
-class InstagramWebClient(private val onAuthSuccessCallback: () -> Unit) : WebViewClient() {
+class InstagramWebClient(private val onAuthSuccessCallback: (String) -> Unit) : WebViewClient() {
 
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
@@ -17,7 +17,7 @@ class InstagramWebClient(private val onAuthSuccessCallback: () -> Unit) : WebVie
 
         val cookies: String = CookieManager.getInstance().getCookie(url)
         if (url == "https://www.instagram.com/" && cookies != "") {
-            onAuthSuccessCallback()
+            onAuthSuccessCallback(cookies)
         }
 
         return true

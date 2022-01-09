@@ -1,5 +1,8 @@
 package com.kirvigen.instagram.stories.autosave.activity.instagramAuth
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kirvigen.instagram.stories.autosave.databinding.ActivityWebInstaAuthBinding
@@ -14,6 +17,7 @@ class WebInstaAuthActivity : AppCompatActivity() {
 
     private var binding: ActivityWebInstaAuthBinding? = null
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWebInstaAuthBinding.inflate(layoutInflater)
@@ -23,12 +27,15 @@ class WebInstaAuthActivity : AppCompatActivity() {
         webSettings.javaScriptEnabled = true
         binding?.webContainer?.loadUrl(loginUrl, headers)
 
-        binding?.webContainer?.webViewClient = InstagramWebClient {
-            finish()
+        binding?.webContainer?.webViewClient = InstagramWebClient { cookies ->
+            successAuth(cookies)
         }
     }
 
-    private fun successAuth() {
-
+    private fun successAuth(cookies: String) {
+        val intent = Intent().apply {
+            putExtra(AuthInstagramResultCallback.KEY_RESULT_INSTAGRAM_COOKIES, cookies)
+        }
+        setResult(Activity.RESULT_OK, intent)
     }
 }
