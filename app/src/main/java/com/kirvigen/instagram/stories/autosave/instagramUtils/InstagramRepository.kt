@@ -7,8 +7,11 @@ interface InstagramRepository {
 
     fun getStories(userId: String)
 
+    fun getInstagramCookies(): String
+
     fun getFollowers(): List<Profile>
 
-    suspend fun getUserId(nickname:String): MyResult
+    fun getCurrentProfile(): Profile
 
+    suspend fun getUserId(nickname: String): MyResult
 }

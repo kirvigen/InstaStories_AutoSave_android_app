@@ -11,17 +11,22 @@ import com.kirvigen.instagram.stories.autosave.utils.toStrResponse
 import org.json.JSONObject
 
 class InstagramRepositoryImpl(
-    private val cookieManager: CookieManager,
     private val okHttpClientCoroutine: OkHttpClientCoroutine
 ) : InstagramRepository {
 
     private val instaCookies: String
-        get() = cookieManager.getCookie("https://www.instagram.com/")
+        get() = CookieManager.getInstance()?.getCookie("https://www.instagram.com/") ?: ""
 
-    private val headers: MutableMap<String,String> = mutableMapOf(
+    private val headers: MutableMap<String, String> = mutableMapOf(
         "user-agent" to USER_AGENT_DEFAULT,
         "cookie" to instaCookies
     )
+
+    override fun getInstagramCookies(): String = instaCookies
+
+    override fun getCurrentProfile(): Profile {
+        TODO("Not yet implemented")
+    }
 
     override fun getStories(userId: String) {
     }

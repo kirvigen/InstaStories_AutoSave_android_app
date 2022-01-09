@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">InstStories AutoSave</string>
     <string name="web_auth_head_title">Авторизуйтесь в аккаунте, с которого будете собирать истории с других аккаунтов</string>
+    <string name="auth_success">Вход выполнен</string>
 </resources>
