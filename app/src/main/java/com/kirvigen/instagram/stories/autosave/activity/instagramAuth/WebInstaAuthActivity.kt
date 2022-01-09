@@ -46,10 +46,6 @@ class WebInstaAuthActivity : AppCompatActivity() {
 
     private fun successAuth(cookies: String) {
         Toast.makeText(this, getString(R.string.auth_success), Toast.LENGTH_SHORT).show()
-
-        val intent = Intent().apply {
-            putExtra(AuthInstagramResultCallback.KEY_RESULT_INSTAGRAM_COOKIES, cookies)
-        }
-        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 }
