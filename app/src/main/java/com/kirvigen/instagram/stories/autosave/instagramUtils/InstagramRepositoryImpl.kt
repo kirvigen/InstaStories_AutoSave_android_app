@@ -1,33 +1,32 @@
 package com.kirvigen.instagram.stories.autosave.instagramUtils
 
+import android.content.SharedPreferences
 import android.webkit.CookieManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.instagramUtils.db.ProfileDao
 import com.kirvigen.instagram.stories.autosave.instagramUtils.db.StoriesDao
 import com.kirvigen.instagram.stories.autosave.utils.BadResponseException
-import com.kirvigen.instagram.stories.autosave.utils.Constans.Companion.USER_AGENT_DEFAULT
 import com.kirvigen.instagram.stories.autosave.utils.MyResult
 import com.kirvigen.instagram.stories.autosave.utils.OkHttpClientCoroutine
+import com.kirvigen.instagram.stories.autosave.utils.getStringFromMapString
 import com.kirvigen.instagram.stories.autosave.utils.toStrResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.json.JSONObject
+import java.lang.reflect.Type
 import kotlin.coroutines.CoroutineContext
 
 class InstagramRepositoryImpl(
     private val okHttpClientCoroutine: OkHttpClientCoroutine,
     private val profileDao: ProfileDao,
-    private val storiesDao: StoriesDao
+    private val storiesDao: StoriesDao,
+    private val sharedPreferences: SharedPreferences
 ) : InstagramRepository, CoroutineScope {
-
-    private val headers: MutableMap<String, String> = mutableMapOf(
-        "user-agent" to USER_AGENT_DEFAULT,
-        "cookie" to getInstagramCookies(),
-        "sec-ch-us" to "\"Chromium\";v=\"60\", , \";Not A Brand\";v=\"99\""
-    )
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
@@ -37,7 +36,7 @@ class InstagramRepositoryImpl(
 
     override suspend fun getCurrentProfile(): Profile {
         val response = okHttpClientCoroutine.newCall(
-            OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/", headers)
+            OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/", getLocalHeaders())
         ).toStrResponse() ?: ""
 
         val jsonString = response.split("window._sharedData =")[1].split(";</script>")[0]
@@ -57,7 +56,10 @@ class InstagramRepositoryImpl(
 
     override suspend fun getStories(userId: Long): List<Stories> {
         val response = okHttpClientCoroutine.newCall(
-            OkHttpClientCoroutine.buildGetRequest("https://i.instagram.com/api/v1/feed/user/$userId/story/", headers)
+            OkHttpClientCoroutine.buildGetRequest(
+                "https://i.instagram.com/api/v1/feed/user/$userId/story/",
+                getLocalHeaders()
+            )
         ).toStrResponse() ?: return emptyList()
         val stories = parseStories(response, userId)
 
@@ -70,20 +72,29 @@ class InstagramRepositoryImpl(
         TODO("todo")
     }
 
-    override suspend fun getUserId(nickname: String): MyResult {
-        val response = okHttpClientCoroutine.newCall(
-            OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/${nickname}/", headers)
-        ).toStrResponse() ?: return MyResult.Error("internetError", BadResponseException())
+    override fun getUserId(nickname: String): String {
+        return getStringFromMapString(getInstagramCookies(), "ds_user_id")
+    }
 
-        val jsonString = response.split("window._sharedData =")[1].split(";</script>")[0]
-        val userId = JSONObject(jsonString)
-            .getJSONObject("entry_data")
-            .getJSONArray("ProfilePage")
-            .getJSONObject(0)
-            .getString("logging_page_id")
-            .split("_")[1]
+    override fun saveAuthHeaders(headers: Map<String, String>) {
+        val headersJson = Gson().toJson(headers)
+        sharedPreferences.edit().putString(SAVED_HEADERS_KEY, headersJson).apply()
+    }
 
-        return MyResult.Success(userId)
+    private fun getLocalHeaders(): Map<String, String> {
+        val typeOfMap: Type = object : TypeToken<Map<String, String>>() {}.type
+        val headersString = sharedPreferences.getString(SAVED_HEADERS_KEY, "") ?: ""
+        return try {
+            val headers:MutableMap<String,String> = Gson().fromJson(headersString, typeOfMap)
+
+            headers.apply {
+                put("cookie", getInstagramCookies())
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mapOf()
+        }
+
     }
 
     private fun parseStories(jsonString: String, userId: Long): List<Stories> {
@@ -98,7 +109,7 @@ class InstagramRepositoryImpl(
                     .getJSONArray("candidates")
                     .getJSONObject(2)
                     .getString("url")
-                val idStories = item.getLong("id")
+                val idStories = item.getString("id").split("_")[0].toLong()
                 val isVideo = item.optJSONArray("video_versions") != null
                 val sourceMedia = if (isVideo) {
                     item.getJSONArray("video_versions")
@@ -126,5 +137,9 @@ class InstagramRepositoryImpl(
         }
 
         return result
+    }
+
+    companion object {
+        private const val SAVED_HEADERS_KEY = "saved_headers_key"
     }
 }

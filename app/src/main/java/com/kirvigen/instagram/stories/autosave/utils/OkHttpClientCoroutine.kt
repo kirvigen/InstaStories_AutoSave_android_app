@@ -38,6 +38,8 @@ class OkHttpClientCoroutine {
 
                 override fun onResponse(call: Call, response: Response) {
                     try {
+//                        Log.e("Cookie (${request.url})", request.headers["cookie"] ?: "")
+//                        Log.e("Response Headers (${request.url})", response.headers.toString())
                         ret.resume(MyResult.Success(response.body?.string().toString()))
                     } catch (e: Exception) {
                         ret.resume(MyResult.Error(e.message.toString()))

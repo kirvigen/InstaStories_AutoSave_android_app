@@ -10,9 +10,11 @@ interface InstagramRepository {
 
     fun getInstagramCookies(): String
 
+    fun saveAuthHeaders(headers: Map<String,String>)
+
     suspend fun getFollowers(): List<Profile>
 
     suspend fun getCurrentProfile(): Profile?
 
-    suspend fun getUserId(nickname: String): MyResult
+    fun getUserId(nickname: String): String
 }

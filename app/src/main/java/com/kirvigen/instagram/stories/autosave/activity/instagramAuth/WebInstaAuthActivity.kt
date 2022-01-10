@@ -12,6 +12,10 @@ import androidx.core.view.isVisible
 import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
 import com.kirvigen.instagram.stories.autosave.utils.Constans
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class WebInstaAuthActivity : AppCompatActivity() {

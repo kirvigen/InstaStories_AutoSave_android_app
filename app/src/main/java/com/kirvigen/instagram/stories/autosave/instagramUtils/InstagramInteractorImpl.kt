@@ -11,11 +11,15 @@ class InstagramInteractorImpl(
 
     override fun isAuthInstagram(): Boolean = instagramRepository.getInstagramCookies() != ""
 
+    override fun saveAuthHeaders(headers: Map<String, String>) {
+
+    }
+
     override fun checkAndOpenAuthInstagram() {
-        if (!isAuthInstagram()) {
+//        if (!isAuthInstagram()) {
             val intent = Intent(context, WebInstaAuthActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
-        }
+//        }
     }
 }
