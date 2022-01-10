@@ -11,13 +11,14 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
+import com.kirvigen.instagram.stories.autosave.utils.Constans
 import org.koin.android.ext.android.inject
 
 class WebInstaAuthActivity : AppCompatActivity() {
 
     private val loginUrl = "https://www.instagram.com/login"
     private val headers = mapOf(
-        "user-agent" to "Mozilla/5.0 (Linux; Android 8.0.0; SM-G960F Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.84 Mobile Safari/537.36"
+        "user-agent" to Constans.USER_AGENT_DEFAULT
     )
     private val instagramInteractor: InstagramInteractor by inject()
 

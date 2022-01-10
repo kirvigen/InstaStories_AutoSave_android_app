@@ -2,6 +2,6 @@ package com.kirvigen.instagram.stories.autosave.utils
 
 class Constans {
     companion object {
-        const val USER_AGENT_DEFAULT = "Mozilla/5.0 (Linux; Android 8.0.0; SM-G960F Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.84 Mobile Safari/537.36"
+        const val USER_AGENT_DEFAULT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
     }
 }

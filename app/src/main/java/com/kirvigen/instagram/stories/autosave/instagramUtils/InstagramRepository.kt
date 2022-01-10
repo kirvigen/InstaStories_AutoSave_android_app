@@ -1,11 +1,12 @@
 package com.kirvigen.instagram.stories.autosave.instagramUtils
 
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
+import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.utils.MyResult
 
 interface InstagramRepository {
 
-    suspend fun getStories(userId: String): List<String>
+    suspend fun getStories(userId: Long): List<Stories>
 
     fun getInstagramCookies(): String
 

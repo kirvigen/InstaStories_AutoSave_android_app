@@ -6,15 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Profile(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    val id: String,
-    @ColumnInfo(name = "photo")
+    @PrimaryKey()
+    var id: Long,
     val photo: String,
-    @ColumnInfo(name = "name")
     val name: String,
-    @ColumnInfo(name = "description")
     val description: String = "",
-    @ColumnInfo(name = "isCorrect")
-    val isCorrentProfile: Boolean = false
+    val isCorrectProfile: Boolean = false
 )

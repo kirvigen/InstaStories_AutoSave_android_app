@@ -1,5 +1,6 @@
 package com.kirvigen.instagram.stories.autosave.activity.mainScreen
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
@@ -24,7 +25,9 @@ class MainViewModel(
     fun loadProfile() {
         launch {
             try {
-                currentProfile.postValue(instagramRepository.getCurrentProfile() ?: return@launch)
+                val profile = instagramRepository.getCurrentProfile() ?: return@launch
+                currentProfile.postValue(profile)
+                Log.e("My STORIES", instagramRepository.getStories(profile.id).toString())
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -33,5 +36,9 @@ class MainViewModel(
 
     fun onResume() {
         instagramInteractor.checkAndOpenAuthInstagram()
+
+        if (instagramInteractor.isAuthInstagram() && currentProfile.value == null) {
+            loadProfile()
+        }
     }
 }

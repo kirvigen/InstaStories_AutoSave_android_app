@@ -10,11 +10,11 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 interface StoriesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(listProfiles: List<Stories>)
+    suspend fun insert(listStories: List<Stories>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(profile: Stories)
 
     @Query("SELECT * FROM stories WHERE userId = :profileId")
-    suspend fun getStories(profileId: String)
+    suspend fun getStories(profileId: String): List<Stories>
 }

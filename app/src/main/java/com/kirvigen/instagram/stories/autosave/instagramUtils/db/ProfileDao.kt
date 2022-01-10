@@ -15,9 +15,9 @@ interface ProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(profile: Profile)
 
-    @Query("SELECT * FROM `profile` WHERE isCorrect = 1")
-    suspend fun getCorrectProfile()
+    @Query("SELECT * FROM `profile` WHERE isCorrectProfile = 1")
+    suspend fun getCorrectProfile(): Profile?
 
-    @Query("SELECT * FROM `profile`")
-    suspend fun getTopGames(): List<Profile>
+    @Query("SELECT * FROM `profile` WHERE isCorrectProfile = 0")
+    suspend fun getProfiles(): List<Profile>
 }

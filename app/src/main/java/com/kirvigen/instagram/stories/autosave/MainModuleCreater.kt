@@ -16,13 +16,13 @@ object MainModuleCreater {
 
     fun create() = module {
         single { OkHttpClientCoroutine() }
-        single<InstagramRepository> { InstagramRepositoryImpl(get()) }
+        single<InstagramRepository> { InstagramRepositoryImpl(get(), get(), get()) }
         single<InstagramInteractor> { InstagramInteractorImpl(get(), androidContext()) }
         viewModel { MainViewModel(get(), get()) }
-        single {
+        single<InstagramDb> {
             Room.databaseBuilder(
                 androidContext(),
-                InstagramDb::class.java, "instagram-database"
+                InstagramDb::class.java, "instagramDb"
             ).build()
         }
         single { get<InstagramDb>().ProfileDao() }
