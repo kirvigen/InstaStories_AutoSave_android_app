@@ -4,8 +4,13 @@ plugins {
     id 'kotlin-kapt'
 }
 
+
 android {
     compileSdk 31
+
+    androidExtensions {
+        experimental = true
+    }
 
     defaultConfig {
         applicationId "com.kirvigen.instagram.stories.autosave"

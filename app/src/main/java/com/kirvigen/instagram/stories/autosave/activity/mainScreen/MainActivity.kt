@@ -2,21 +2,12 @@ package com.kirvigen.instagram.stories.autosave.activity.mainScreen
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.webkit.CookieManager
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
-import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.activity.mainScreen.adapter.StoriesAdapter
 import com.kirvigen.instagram.stories.autosave.databinding.ActivityMainBinding
-import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
-import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
-import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepositoryImpl
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.utils.GridSpacingItemDecoration
-import com.kirvigen.instagram.stories.autosave.utils.MyResult
 import com.kirvigen.instagram.stories.autosave.utils.OkHttpClientCoroutine
 import com.kirvigen.instagram.stories.autosave.utils.dpToPx
 import com.kirvigen.instagram.stories.autosave.utils.loadImage

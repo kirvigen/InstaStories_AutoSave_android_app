@@ -21,9 +21,6 @@ import org.koin.android.ext.android.inject
 class WebInstaAuthActivity : AppCompatActivity() {
 
     private val loginUrl = "https://www.instagram.com/login"
-    private val headers = mapOf(
-        "user-agent" to Constans.USER_AGENT_DEFAULT
-    )
     private val instagramInteractor: InstagramInteractor by inject()
 
     private var binding: ActivityWebInstaAuthBinding? = null
@@ -36,7 +33,7 @@ class WebInstaAuthActivity : AppCompatActivity() {
 
         val webSettings: WebSettings = binding?.webContainer?.settings ?: return
         webSettings.javaScriptEnabled = true
-        binding?.webContainer?.loadUrl(loginUrl, headers)
+        binding?.webContainer?.loadUrl(loginUrl)
 
         binding?.webContainer?.webViewClient = InstagramWebClient { cookies ->
             successAuth(cookies)
@@ -45,12 +42,10 @@ class WebInstaAuthActivity : AppCompatActivity() {
         binding?.backBtn?.setOnClickListener {
             onBackPressed()
         }
-
-        binding?.backBtn?.isVisible = instagramInteractor.isAuthInstagram()
     }
 
     private fun successAuth(cookies: String) {
-        Toast.makeText(this, getString(R.string.auth_success), Toast.LENGTH_SHORT).show()
-        finish()
+
+
     }
 }

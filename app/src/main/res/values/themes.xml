@@ -14,4 +14,9 @@
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
+
+    <style name="Theme.InstStoriesAutoSave.ShadowStyle">
+        <item name="android:elevation">5dp</item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="p">@color/gray_16</item>
+    </style>
 </resources>

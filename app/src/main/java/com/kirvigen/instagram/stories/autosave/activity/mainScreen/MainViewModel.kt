@@ -49,10 +49,10 @@ class MainViewModel(
     }
 
     fun onResume() {
-//        instagramInteractor.checkAndOpenAuthInstagram()
-//
-//        if (instagramInteractor.isAuthInstagram() && currentProfile.value == null) {
-//            loadProfile()
-//        }
+        instagramInteractor.checkAndOpenAuthInstagram()
+
+        if (instagramInteractor.isAuthInstagram() && currentProfile.value == null) {
+            loadProfile()
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.kirvigen.instagram.stories.autosave.instagramUtils
 
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
-import com.kirvigen.instagram.stories.autosave.utils.MyResult
 
 interface InstagramRepository {
 
@@ -15,6 +14,8 @@ interface InstagramRepository {
     suspend fun getFollowers(): List<Profile>
 
     suspend fun getCurrentProfile(): Profile?
+
+    suspend fun wipeCurrentProfile()
 
     fun getUserId(nickname: String): String
 }

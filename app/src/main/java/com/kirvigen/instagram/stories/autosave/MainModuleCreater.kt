@@ -1,12 +1,10 @@
 package com.kirvigen.instagram.stories.autosave
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.room.Room
 import com.kirvigen.instagram.stories.autosave.activity.mainScreen.MainViewModel
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractorImpl
-import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepositoryImpl
 import com.kirvigen.instagram.stories.autosave.instagramUtils.db.InstagramDb
 import com.kirvigen.instagram.stories.autosave.utils.OkHttpClientCoroutine

@@ -4,7 +4,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
 import org.koin.java.KoinJavaComponent.inject
 
 class InstagramWebClient(private val onAuthSuccessCallback: (String) -> Unit) : WebViewClient() {

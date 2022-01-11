@@ -13,6 +13,7 @@ import com.kirvigen.instagram.stories.autosave.utils.MyResult
 import com.kirvigen.instagram.stories.autosave.utils.OkHttpClientCoroutine
 import com.kirvigen.instagram.stories.autosave.utils.getStringFromMapString
 import com.kirvigen.instagram.stories.autosave.utils.toStrResponse
+import com.kirvigen.instagram.stories.autosave.utils.valueOrNull
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -31,27 +32,43 @@ class InstagramRepositoryImpl(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    override fun getInstagramCookies(): String =
-        CookieManager.getInstance()?.getCookie("https://www.instagram.com/") ?: ""
+    override fun getInstagramCookies(): String {
+        val manager = CookieManager.getInstance()
+        manager?.flush()
+        return manager?.getCookie(INSTAGRAM_MAIN_URL) ?: ""
+    }
 
-    override suspend fun getCurrentProfile(): Profile {
+    override suspend fun getCurrentProfile(): Profile? {
+        val savedProfile = profileDao.getCorrectProfile()
+        if (savedProfile != null) return savedProfile
+
         val response = okHttpClientCoroutine.newCall(
-            OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/", getLocalHeaders())
+            OkHttpClientCoroutine.buildGetRequest(INSTAGRAM_MAIN_URL, getLocalHeaders())
         ).toStrResponse() ?: ""
 
-        val jsonString = response.split("window._sharedData =")[1].split(";</script>")[0]
-        val profileData = JSONObject(jsonString)
-            .getJSONObject("config")
-            .getJSONObject("viewer")
-        val photo = profileData.getString("profile_pic_url_hd")
-        val username = profileData.getString("username")
-        val description = profileData.getString("biography")
-        val id = profileData.getLong("id")
-        val profile = Profile(id, photo, username, description, true)
+        val profile = valueOrNull {
+            val jsonString = response.split("window._sharedData =")[1].split(";</script>")[0]
+            val profileData = JSONObject(jsonString)
+                .getJSONObject("config")
+                .getJSONObject("viewer")
+            val photo = profileData.getString("profile_pic_url_hd")
+            val username = profileData.getString("username")
+            val description = profileData.getString("biography")
+            val id = profileData.getLong("id")
+            return@valueOrNull Profile(id, photo, username, description, true)
+        }
 
-        coroutineScope { async(Dispatchers.IO) { profileDao.insert(profile) } }
+        coroutineScope { async(Dispatchers.IO) { profileDao.insert(profile ?: return@async) } }
 
         return profile
+    }
+
+    override suspend fun wipeCurrentProfile() {
+        saveAuthHeaders(mapOf())
+        CookieManager.getInstance()?.setCookie(INSTAGRAM_MAIN_URL, "")
+        CookieManager.getInstance()?.flush()
+
+        profileDao.deleteProfile(profileDao.getCorrectProfile() ?: return)
     }
 
     override suspend fun getStories(userId: Long): List<Stories> {
@@ -85,7 +102,7 @@ class InstagramRepositoryImpl(
         val typeOfMap: Type = object : TypeToken<Map<String, String>>() {}.type
         val headersString = sharedPreferences.getString(SAVED_HEADERS_KEY, "") ?: ""
         return try {
-            val headers:MutableMap<String,String> = Gson().fromJson(headersString, typeOfMap)
+            val headers: MutableMap<String, String> = Gson().fromJson(headersString, typeOfMap)
 
             headers.apply {
                 put("cookie", getInstagramCookies())
@@ -94,7 +111,6 @@ class InstagramRepositoryImpl(
             e.printStackTrace()
             mapOf()
         }
-
     }
 
     private fun parseStories(jsonString: String, userId: Long): List<Stories> {
@@ -140,6 +156,7 @@ class InstagramRepositoryImpl(
     }
 
     companion object {
+        private const val INSTAGRAM_MAIN_URL = "https://www.instagram.com/"
         private const val SAVED_HEADERS_KEY = "saved_headers_key"
     }
 }
