@@ -13,10 +13,25 @@
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
+
     </style>
 
-    <style name="Theme.InstStoriesAutoSave.ShadowStyle">
+    <style name="ShadowStyle">
         <item name="android:elevation">5dp</item>
         <item name="android:outlineSpotShadowColor" tools:targetApi="p">@color/gray_16</item>
     </style>
+
+    <style name="FontRegular">
+        <item name="android:fontFamily">@font/san_francisco_regular</item>
+        <item name="fontFamily">@font/san_francisco_regular</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="FontBold">
+        <item name="android:fontFamily">@font/san_francisco_bold</item>
+        <item name="fontFamily">@font/san_francisco_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

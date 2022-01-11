@@ -1,10 +1,12 @@
 package com.kirvigen.instagram.stories.autosave.instagramUtils.data
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity
-@Parceli
+@Parcelize
 data class Profile(
     @PrimaryKey
     var id: Long,
@@ -12,4 +14,4 @@ data class Profile(
     val name: String,
     val description: String = "",
     val isCurrentProfile: Boolean = false
-)
+) : Parcelable

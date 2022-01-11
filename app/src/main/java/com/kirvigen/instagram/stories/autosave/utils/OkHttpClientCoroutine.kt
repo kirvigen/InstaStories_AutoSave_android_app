@@ -68,3 +68,5 @@ sealed class MyResult {
 }
 
 class BadResponseException : Exception()
+
+class ParseResponseException: Exception()

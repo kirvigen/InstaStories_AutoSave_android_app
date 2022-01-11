@@ -16,10 +16,10 @@ interface ProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(profile: Profile)
 
-    @Query("SELECT * FROM `profile` WHERE isCorrectProfile = 1")
+    @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 1")
     suspend fun getCorrectProfile(): Profile?
 
-    @Query("SELECT * FROM `profile` WHERE isCorrectProfile = 0")
+    @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 0")
     suspend fun getProfiles(): List<Profile>
 
     @Delete

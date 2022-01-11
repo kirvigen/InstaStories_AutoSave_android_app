@@ -11,6 +11,7 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.db.StoriesDao
 import com.kirvigen.instagram.stories.autosave.utils.BadResponseException
 import com.kirvigen.instagram.stories.autosave.utils.MyResult
 import com.kirvigen.instagram.stories.autosave.utils.OkHttpClientCoroutine
+import com.kirvigen.instagram.stories.autosave.utils.ParseResponseException
 import com.kirvigen.instagram.stories.autosave.utils.getStringFromMapString
 import com.kirvigen.instagram.stories.autosave.utils.toStrResponse
 import com.kirvigen.instagram.stories.autosave.utils.valueOrNull
@@ -38,9 +39,9 @@ class InstagramRepositoryImpl(
         return manager?.getCookie(INSTAGRAM_MAIN_URL) ?: ""
     }
 
-    override suspend fun getCurrentProfile(): Profile? {
+    override suspend fun getCurrentProfile(refresh: Boolean): Profile? {
         val savedProfile = profileDao.getCorrectProfile()
-        if (savedProfile != null) return savedProfile
+        if (savedProfile != null && !refresh) return savedProfile
 
         val response = okHttpClientCoroutine.newCall(
             OkHttpClientCoroutine.buildGetRequest(INSTAGRAM_MAIN_URL, getLocalHeaders())
@@ -89,7 +90,25 @@ class InstagramRepositoryImpl(
         TODO("todo")
     }
 
-    override fun getUserId(nickname: String): String {
+    override suspend fun getUserId(nickname: String): MyResult {
+        val response = okHttpClientCoroutine.newCall(
+            OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/${nickname}/", getLocalHeaders())
+        ).toStrResponse() ?: return MyResult.Error("internetError", BadResponseException())
+
+        val userId = valueOrNull {
+            val jsonString = response.split("window._sharedData =")[1].split(";</script>")[0]
+            return@valueOrNull JSONObject(jsonString)
+                .getJSONObject("entry_data")
+                .getJSONArray("ProfilePage")
+                .getJSONObject(0)
+                .getString("logging_page_id")
+                .split("_")[1]
+        }
+
+        return MyResult.Success(userId ?: return MyResult.Error("Parse Error", ParseResponseException()))
+    }
+
+    private fun getCurrentUserId(nickname: String): String {
         return getStringFromMapString(getInstagramCookies(), "ds_user_id")
     }
 

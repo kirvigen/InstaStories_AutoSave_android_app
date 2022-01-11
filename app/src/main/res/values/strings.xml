@@ -2,4 +2,9 @@
     <string name="app_name">InstStories AutoSave</string>
     <string name="web_auth_head_title">Авторизуйтесь в аккаунте, с которого будете собирать истории с других аккаунтов</string>
     <string name="auth_success">Вход выполнен</string>
+    <string name="loading_auth">Выполняется вход...</string>
+    <string name="error_auth">Не удалось войти, повторите попытку</string>
+    <string name="welcome_head_title">Добро пожаловать!</string>
+    <string name="welcome_body_title">Чтобы начать сохранять истории из instagram нужно войти в аккаунт</string>
+    <string name="auth_btn_title">Войти</string>
 </resources>
