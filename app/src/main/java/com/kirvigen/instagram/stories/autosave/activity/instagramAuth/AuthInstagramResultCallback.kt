@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContract
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 
-class AuthInstagramResultCallback : ActivityResultContract<String, Profile?>() {
+class AuthInstagramResultCallback : ActivityResultContract<String?, Profile?>() {
     override fun createIntent(context: Context, input: String?): Intent {
         return Intent(context, WebInstaAuthActivity::class.java)
     }

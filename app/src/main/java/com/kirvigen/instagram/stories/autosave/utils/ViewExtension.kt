@@ -5,11 +5,16 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 @SuppressLint("CheckResult")
-fun ImageView?.loadImage(url: String) {
+fun ImageView?.loadImage(url: String, crossFade: Boolean = true) {
     Glide.with(this ?: return)
         .load(url)
+        .apply {
+            if (crossFade)
+                transition(DrawableTransitionOptions.withCrossFade())
+        }
         .into(this)
 }
 

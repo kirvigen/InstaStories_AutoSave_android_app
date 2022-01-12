@@ -2,6 +2,7 @@ package com.kirvigen.instagram.stories.autosave.instagramUtils
 
 import android.content.SharedPreferences
 import android.webkit.CookieManager
+import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
@@ -12,7 +13,6 @@ import com.kirvigen.instagram.stories.autosave.utils.BadResponseException
 import com.kirvigen.instagram.stories.autosave.utils.MyResult
 import com.kirvigen.instagram.stories.autosave.utils.OkHttpClientCoroutine
 import com.kirvigen.instagram.stories.autosave.utils.ParseResponseException
-import com.kirvigen.instagram.stories.autosave.utils.getStringFromMapString
 import com.kirvigen.instagram.stories.autosave.utils.toStrResponse
 import com.kirvigen.instagram.stories.autosave.utils.valueOrNull
 import kotlinx.coroutines.CoroutineScope
@@ -72,7 +72,9 @@ class InstagramRepositoryImpl(
         profileDao.deleteProfile(profileDao.getCorrectProfile() ?: return)
     }
 
-    override suspend fun getStories(userId: Long): List<Stories> {
+    override fun getStoriesUser(userId: Long): LiveData<List<Stories>> = storiesDao.getStoriesProfile(userId)
+
+    override suspend fun getActualStories(userId: Long): List<Stories> {
         val response = okHttpClientCoroutine.newCall(
             OkHttpClientCoroutine.buildGetRequest(
                 "https://i.instagram.com/api/v1/feed/user/$userId/story/",
@@ -90,6 +92,8 @@ class InstagramRepositoryImpl(
         TODO("todo")
     }
 
+    override suspend fun getProfile(stories: Stories): Profile? = profileDao.getProfile(stories.userId)
+
     override suspend fun getUserId(nickname: String): MyResult {
         val response = okHttpClientCoroutine.newCall(
             OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/${nickname}/", getLocalHeaders())
@@ -106,10 +110,6 @@ class InstagramRepositoryImpl(
         }
 
         return MyResult.Success(userId ?: return MyResult.Error("Parse Error", ParseResponseException()))
-    }
-
-    private fun getCurrentUserId(nickname: String): String {
-        return getStringFromMapString(getInstagramCookies(), "ds_user_id")
     }
 
     override fun saveAuthHeaders(headers: Map<String, String>) {

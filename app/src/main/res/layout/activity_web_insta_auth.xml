@@ -13,10 +13,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/web_auth_head_title"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:layout_marginTop="32dp"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -29,6 +29,7 @@
         android:layout_margin="16dp"
         android:background="@drawable/bg_outline_webview"
         android:padding="2dp"
+        android:translationZ="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -36,7 +37,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical">
@@ -62,6 +63,7 @@
         android:id="@+id/profileImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:src="@color/gray_16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -74,7 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profileImage" />

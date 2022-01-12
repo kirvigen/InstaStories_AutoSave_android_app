@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/imageView"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?selectableItemBackground"
-    android:scaleType="centerCrop"
-    android:focusable="true" />
+    app:cardElevation="0dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_16"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/videoIcon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_play_icon"
+        android:visibility="gone" />
+
+</androidx.cardview.widget.CardView>

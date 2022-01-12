@@ -1,5 +1,6 @@
 package com.kirvigen.instagram.stories.autosave.instagramUtils.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -16,5 +17,5 @@ interface StoriesDao {
     suspend fun insert(profile: Stories)
 
     @Query("SELECT * FROM stories WHERE userId = :profileId")
-    suspend fun getStories(profileId: String): List<Stories>
+    fun getStoriesProfile(profileId: Long): LiveData<List<Stories>>
 }

@@ -24,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
 
 class WebInstaAuthActivity : AppCompatActivity(), CoroutineScope {
 
-    private val loginUrl = "https://www.instagram.com/login"
+    private val loginUrl = "https://www.instagram.com/accounts/login/"
     private val instagramInteractor: InstagramInteractor by inject()
     private var binding: ActivityWebInstaAuthBinding? = null
 
@@ -51,7 +51,7 @@ class WebInstaAuthActivity : AppCompatActivity(), CoroutineScope {
 
         val profile = instagramInteractor.loadCurrentUser()
         profile?.let {
-            binding?.profileImage?.loadImage(profile.photo)
+            binding?.profileImage?.loadImage(profile.photo, false)
             binding?.nickname?.text = profile.name
 
             binding?.webViewContainer?.apply {
@@ -74,11 +74,13 @@ class WebInstaAuthActivity : AppCompatActivity(), CoroutineScope {
             }
 
             setResult(RESULT_OK, intent)
+            finish()
         }
 
         if (profile == null) {
             valueOrNull { Toast.makeText(this, getString(R.string.error_auth), Toast.LENGTH_LONG).show() }
             setResult(RESULT_CANCELED)
+            finish()
         }
     }
 }
