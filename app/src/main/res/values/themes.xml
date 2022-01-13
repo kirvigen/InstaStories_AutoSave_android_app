@@ -17,6 +17,15 @@
 
     </style>
 
+    <style name="Theme.InstStoriesAutoSave.ViewerStories" parent="@style/Theme.InstStoriesAutoSave">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/black_50</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
     <style name="ShadowStyle">
         <item name="android:elevation">5dp</item>
         <item name="android:outlineSpotShadowColor" tools:targetApi="p">@color/gray_16</item>

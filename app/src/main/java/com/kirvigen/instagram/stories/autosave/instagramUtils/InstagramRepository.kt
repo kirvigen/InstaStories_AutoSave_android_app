@@ -24,5 +24,5 @@ interface InstagramRepository {
 
     suspend fun wipeCurrentProfile()
 
-    suspend fun getUserId(nickname: String): MyResult
+    suspend fun getProfile(nickname: String): Profile?
 }

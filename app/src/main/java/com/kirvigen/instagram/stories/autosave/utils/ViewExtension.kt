@@ -1,7 +1,10 @@
 package com.kirvigen.instagram.stories.autosave.utils
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.graphics.Color
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -26,4 +29,11 @@ fun View?.animateAlpha(alpha: Float, endCallback: (() -> Unit)? = null) {
             endCallback?.invoke()
         }
         ?.start()
+}
+
+fun Activity.setTransparentStatusBar() {
+    window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+    window.statusBarColor = Color.argb(0, 0, 0, 0)
 }

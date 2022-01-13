@@ -56,7 +56,7 @@ class InstagramRepositoryImpl(
             val username = profileData.getString("username")
             val description = profileData.getString("biography")
             val id = profileData.getLong("id")
-            return@valueOrNull Profile(id, photo, username, description, true)
+            return@valueOrNull Profile(id, photo, username, description, username)
         }
 
         coroutineScope { async(Dispatchers.IO) { profileDao.insert(profile ?: return@async) } }
@@ -69,7 +69,7 @@ class InstagramRepositoryImpl(
         CookieManager.getInstance()?.setCookie(INSTAGRAM_MAIN_URL, "")
         CookieManager.getInstance()?.flush()
 
-        profileDao.deleteProfile(profileDao.getCorrectProfile() ?: return)
+//        profileDao.deleteProfile(profileDao.getCorrectProfile() ?: return)
     }
 
     override fun getStoriesUser(userId: Long): LiveData<List<Stories>> = storiesDao.getStoriesProfile(userId)
@@ -94,22 +94,37 @@ class InstagramRepositoryImpl(
 
     override suspend fun getProfile(stories: Stories): Profile? = profileDao.getProfile(stories.userId)
 
-    override suspend fun getUserId(nickname: String): MyResult {
+    override suspend fun getProfile(nickname: String): Profile? {
+        val savedProfile = profileDao.getProfile(nickname)
+        if (savedProfile != null) return savedProfile
+
         val response = okHttpClientCoroutine.newCall(
             OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/${nickname}/", getLocalHeaders())
-        ).toStrResponse() ?: return MyResult.Error("internetError", BadResponseException())
+        ).toStrResponse() ?: return null
 
-        val userId = valueOrNull {
+        val profile = valueOrNull {
             val jsonString = response.split("window._sharedData =")[1].split(";</script>")[0]
-            return@valueOrNull JSONObject(jsonString)
+            val mainObj = JSONObject(jsonString)
                 .getJSONObject("entry_data")
                 .getJSONArray("ProfilePage")
                 .getJSONObject(0)
-                .getString("logging_page_id")
-                .split("_")[1]
+
+            val userId = mainObj.getString("logging_page_id")
+                .split("_")[1].toLong()
+
+            val userObj = mainObj.getJSONObject("graphql").getJSONObject("user")
+
+            val name = userObj.getString("full_name")
+            val description = userObj.getString("biography")
+            val photo = userObj.getString("profile_pic_url")
+
+            return@valueOrNull Profile(userId, photo, name, description, nickname)
+
         }
 
-        return MyResult.Success(userId ?: return MyResult.Error("Parse Error", ParseResponseException()))
+        profile?.let { profileDao.insert(profile) }
+
+        return profile
     }
 
     override fun saveAuthHeaders(headers: Map<String, String>) {

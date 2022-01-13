@@ -13,5 +13,6 @@ data class Profile(
     val photo: String,
     val name: String,
     val description: String = "",
+    val nickname: String,
     val isCurrentProfile: Boolean = false
 ) : Parcelable

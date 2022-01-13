@@ -20,8 +20,7 @@ object MainModuleCreater {
         single { androidContext().getSharedPreferences("LocalStorage", Context.MODE_PRIVATE) }
         single<InstagramRepository> { InstagramRepositoryImpl(get(), get(), get(), get()) }
         single<InstagramInteractor> { InstagramInteractorImpl(get(), androidContext()) }
-        viewModel { MainViewModel(get(), get()) }
-        single<InstagramDb> {
+        single {
             Room.databaseBuilder(
                 androidContext(),
                 InstagramDb::class.java, "instagramDb"

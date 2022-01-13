@@ -1,9 +1,12 @@
 package com.kirvigen.instagram.stories.autosave.instagramUtils.data
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity
+@Parcelize
 data class Stories(
     @PrimaryKey
     var id: Long,
@@ -11,5 +14,6 @@ data class Stories(
     val isVideo: Boolean,
     val userId: Long,
     val date: Long,
-    val preview: String
-)
+    val preview: String,
+    val localUri: String = ""
+):Parcelable

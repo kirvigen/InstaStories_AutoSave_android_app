@@ -23,11 +23,13 @@ class MainViewModel(
         get() = Dispatchers.Main
 
     val currentProfile = MutableLiveData<Profile>()
-    val storiesData: LiveData<List<Stories>> = instagramRepository.getStoriesUser(getCurrentUserId())
+
+    suspend fun getStoriesData(): LiveData<List<Stories>> =
+        instagramRepository.getStoriesUser(instagramRepository.getProfile("kir_vigen")?.id ?: 0)
 
     init {
         CoroutineScope(Dispatchers.Main).launch {
-            instagramRepository.getActualStories(getCurrentUserId())
+            instagramRepository.getActualStories(instagramRepository.getProfile("kir_vigen")?.id ?: return@launch)
         }
     }
 
