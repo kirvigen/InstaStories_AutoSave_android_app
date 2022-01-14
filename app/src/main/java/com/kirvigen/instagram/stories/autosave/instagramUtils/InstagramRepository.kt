@@ -7,16 +7,15 @@ import com.kirvigen.instagram.stories.autosave.utils.MyResult
 
 interface InstagramRepository {
 
-
-    fun getStoriesUser(userId:Long): LiveData<List<Stories>>
+    fun getStoriesUser(userId: Long): LiveData<List<Stories>>
 
     fun getInstagramCookies(): String
 
-    fun saveAuthHeaders(headers: Map<String,String>)
+    fun saveAuthHeaders(headers: Map<String, String>)
 
-    suspend fun getFollowers(): List<Profile>
+    suspend fun searchProfile(searchText: String): List<Profile>
 
-    suspend fun getActualStories(userId: Long): List<Stories>
+    suspend fun loadActualStories(userId: Long): List<Stories>
 
     suspend fun getProfile(stories: Stories): Profile?
 

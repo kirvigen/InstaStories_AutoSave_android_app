@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.json.JSONObject
+import org.koin.core.qualifier.named
 import java.lang.reflect.Type
 import kotlin.coroutines.CoroutineContext
 
@@ -56,7 +57,7 @@ class InstagramRepositoryImpl(
             val username = profileData.getString("username")
             val description = profileData.getString("biography")
             val id = profileData.getLong("id")
-            return@valueOrNull Profile(id, photo, username, description, username)
+            return@valueOrNull Profile(id, photo, username, description, username, true)
         }
 
         coroutineScope { async(Dispatchers.IO) { profileDao.insert(profile ?: return@async) } }
@@ -74,7 +75,7 @@ class InstagramRepositoryImpl(
 
     override fun getStoriesUser(userId: Long): LiveData<List<Stories>> = storiesDao.getStoriesProfile(userId)
 
-    override suspend fun getActualStories(userId: Long): List<Stories> {
+    override suspend fun loadActualStories(userId: Long): List<Stories> {
         val response = okHttpClientCoroutine.newCall(
             OkHttpClientCoroutine.buildGetRequest(
                 "https://i.instagram.com/api/v1/feed/user/$userId/story/",
@@ -88,8 +89,28 @@ class InstagramRepositoryImpl(
         return stories
     }
 
-    override suspend fun getFollowers(): List<Profile> {
-        TODO("todo")
+    override suspend fun searchProfile(searchText: String): List<Profile> {
+        val response = okHttpClientCoroutine.newCall(
+            OkHttpClientCoroutine.buildGetRequest(
+                "https://www.instagram.com/web/search/topsearch/?context=blended&query=${searchText}&rank_token=&include_reel=true",
+                getLocalHeaders()
+            )
+        ).toStrResponse() ?: return emptyList()
+
+        val result = mutableListOf<Profile>()
+
+        val arrayObj = JSONObject(response).getJSONArray("users")
+        for (i in 0 until arrayObj.length()) {
+            val item = arrayObj.getJSONObject(i).getJSONObject("user")
+            val id = item.getLong("pk")
+            val name = item.getString("full_name")
+            val description = item.optString("biography") ?: ""
+            val photo = item.getString("profile_pic_url")
+            val username = item.getString("username")
+            result.add(Profile(id, photo, name, description, username))
+        }
+
+        return result
     }
 
     override suspend fun getProfile(stories: Stories): Profile? = profileDao.getProfile(stories.userId)
@@ -115,7 +136,7 @@ class InstagramRepositoryImpl(
             val userObj = mainObj.getJSONObject("graphql").getJSONObject("user")
 
             val name = userObj.getString("full_name")
-            val description = userObj.getString("biography")
+            val description = userObj.optString("biography") ?: ""
             val photo = userObj.getString("profile_pic_url")
 
             return@valueOrNull Profile(userId, photo, name, description, nickname)

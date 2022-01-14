@@ -9,6 +9,7 @@
     tools:context=".activity.mainScreen.MainActivity">
 
     <LinearLayout
+        android:id="@+id/current_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center|start"
@@ -35,6 +36,14 @@
         android:id="@+id/storiesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/current_profile" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profileList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/storiesList" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

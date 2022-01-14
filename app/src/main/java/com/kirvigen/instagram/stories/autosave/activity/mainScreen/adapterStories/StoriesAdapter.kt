@@ -1,9 +1,9 @@
-package com.kirvigen.instagram.stories.autosave.activity.mainScreen.adapter
+package com.kirvigen.instagram.stories.autosave.activity.mainScreen.adapterStories
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.kirvigen.instagram.stories.autosave.activity.mainScreen.adapter.viewHolders.StoriesViewHolder
+import com.kirvigen.instagram.stories.autosave.activity.mainScreen.adapterStories.viewHolders.StoriesViewHolder
 import com.kirvigen.instagram.stories.autosave.databinding.ItemStoriesBinding
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 

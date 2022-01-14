@@ -1,4 +1,4 @@
-package com.kirvigen.instagram.stories.autosave.activity.mainScreen.adapter.viewHolders
+package com.kirvigen.instagram.stories.autosave.activity.mainScreen.adapterStories.viewHolders
 
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView

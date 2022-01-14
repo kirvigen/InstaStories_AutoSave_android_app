@@ -3,21 +3,47 @@ package com.kirvigen.instagram.stories.autosave.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 
 @SuppressLint("CheckResult")
 fun ImageView?.loadImage(url: String, crossFade: Boolean = true) {
+    if (crossFade) this?.alpha = 0f
     Glide.with(this ?: return)
         .load(url)
-        .apply {
-            if (crossFade)
-                transition(DrawableTransitionOptions.withCrossFade())
-        }
+        .listener(object : RequestListener<Drawable?> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable?>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable?>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                if (crossFade) {
+                    this@loadImage.animateAlpha(1f)
+                }
+
+                return false
+            }
+        })
         .into(this)
 }
 

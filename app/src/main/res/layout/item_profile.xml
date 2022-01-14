@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/container"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingVertical="4dp">
+
+    <FrameLayout
+        android:layout_width="70dp"
+        android:layout_height="70dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@color/gray_16" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/bg_instagram"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/gradient_instagram"
+            android:visibility="gone" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/nickname"
+        style="@style/FontBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        tools:text="kir_vigen" />
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/FontBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray_50"
+        android:textSize="8sp"
+        tools:text="kir_vigen" />
+
+</LinearLayout>

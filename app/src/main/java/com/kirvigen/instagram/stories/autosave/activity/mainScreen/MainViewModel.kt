@@ -1,8 +1,10 @@
 package com.kirvigen.instagram.stories.autosave.activity.mainScreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
@@ -23,13 +25,20 @@ class MainViewModel(
         get() = Dispatchers.Main
 
     val currentProfile = MutableLiveData<Profile>()
+    val searchProfiles = MutableLiveData<List<Profile>>()
 
     suspend fun getStoriesData(): LiveData<List<Stories>> =
         instagramRepository.getStoriesUser(instagramRepository.getProfile("kir_vigen")?.id ?: 0)
 
     init {
         CoroutineScope(Dispatchers.Main).launch {
-            instagramRepository.getActualStories(instagramRepository.getProfile("kir_vigen")?.id ?: return@launch)
+            instagramRepository.loadActualStories(instagramRepository.getProfile("kir_vigen")?.id ?: return@launch)
+        }
+    }
+
+    fun searchProfiles(searchText: String) {
+        viewModelScope.launch {
+            searchProfiles.postValue(instagramRepository.searchProfile(searchText))
         }
     }
 

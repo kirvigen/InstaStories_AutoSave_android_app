@@ -12,13 +12,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/Theme.InstStoriesAutoSave">
         <activity
-            android:screenOrientation="fullSensor"
-            android:theme="@style/Theme.InstStoriesAutoSave.ViewerStories"
-            android:name=".activity.viewerStories.ViewerStoriesActivity"
+            android:name=".activity.selectUserScreen.SelectedProfilesActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.viewerStories.ViewerStoriesActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Theme.InstStoriesAutoSave.ViewerStories" />
         <activity
             android:name=".activity.welcomeScreen.WelcomeActivity"
             android:exported="true">
