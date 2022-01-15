@@ -7,4 +7,75 @@
     android:layout_height="match_parent"
     tools:context=".activity.selectUserScreen.SelectedProfilesActivity">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/back"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:padding="10dp"
+        android:tint="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_round_keyboard_backspace_24"
+        android:focusable="true" />
+
+    <LinearLayout
+        android:id="@+id/search_block"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_outline_search"
+        app:layout_constraintBottom_toBottomOf="@id/back"
+        app:layout_constraintLeft_toRightOf="@id/back"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/back">
+
+        <EditText
+            android:id="@+id/search_profiles"
+            style="@style/FontRegular"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="@string/search"
+            android:lines="1"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/clear_text"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:tint="@color/gray_50"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_round_close_24" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line_search"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_outline_search"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/back" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_profiles"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_search" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,4 +7,5 @@
     <string name="welcome_head_title">Добро пожаловать!</string>
     <string name="welcome_body_title">Чтобы начать сохранять истории из instagram нужно войти в аккаунт</string>
     <string name="auth_btn_title">Войти</string>
+    <string name="search">Поиск</string>
 </resources>

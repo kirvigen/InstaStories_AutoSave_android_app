@@ -3,8 +3,10 @@ package com.kirvigen.instagram.stories.autosave.activity.selectUserScreen.adapte
 import android.view.animation.DecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.databinding.ItemProfileBinding
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
+import com.kirvigen.instagram.stories.autosave.utils.animateScale
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
 
 class ProfileViewHolder(
@@ -34,9 +36,9 @@ class ProfileViewHolder(
         binding.bgInstagram.isVisible = false
 
         if (selectedLocal) {
-            setSelectState()
+            setSelectState(false)
         } else {
-            setUnselectState()
+            setUnselectState(false)
         }
     }
 
@@ -44,17 +46,28 @@ class ProfileViewHolder(
         binding.profileImage.clearAnimation()
     }
 
-    private fun setSelectState() {
+    private fun setSelectState(animated: Boolean = true) {
         binding.bgInstagram.isVisible = true
         binding.profileImage
             .animate()
-            .scaleX(SCALE_SELECTED)
-            .scaleY(SCALE_SELECTED)
+            .scaleX(SCALE_SELECTED_IMAGE)
+            .scaleY(SCALE_SELECTED_IMAGE)
             .setInterpolator(DecelerateInterpolator())
+            .apply {
+                duration = if (!animated)
+                    0
+                else {
+                    200
+                }
+            }
             .start()
+        binding.bgScaled.animateScale(1f, animated) {
+            binding.bgChanged.setImageResource(R.drawable.gradient_instagram)
+            binding.bgScaled.animateScale(SCALE_BORDER, animated)
+        }
     }
 
-    private fun setUnselectState() {
+    private fun setUnselectState(animated: Boolean = true) {
         binding.profileImage
             .animate()
             .scaleX(1f)
@@ -63,10 +76,23 @@ class ProfileViewHolder(
                 binding.bgInstagram.isVisible = false
             }
             .setInterpolator(DecelerateInterpolator())
+            .apply {
+                duration = if (!animated)
+                    0
+                else {
+                    200
+                }
+            }
             .start()
+        binding.bgScaled.animateScale(1f, animated) {
+            binding.bgChanged.setImageResource(R.color.gray_border)
+            binding.bgScaled.animateScale(SCALE_BORDER, animated)
+        }
+
     }
 
     companion object {
-        private const val SCALE_SELECTED = 0.8f
+        private const val SCALE_BORDER = 0.97f
+        private const val SCALE_SELECTED_IMAGE = 0.8f
     }
 }

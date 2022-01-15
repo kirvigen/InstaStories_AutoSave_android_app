@@ -19,6 +19,6 @@ class SelectedProfilesResultCallback : ActivityResultContract<String?, List<Prof
     }
 
     companion object {
-        const val KEY_RESULT_PROFILES_RESULT = "instagram_auth_result"
+        const val KEY_RESULT_PROFILES_RESULT = "profiles_result_key"
     }
 }

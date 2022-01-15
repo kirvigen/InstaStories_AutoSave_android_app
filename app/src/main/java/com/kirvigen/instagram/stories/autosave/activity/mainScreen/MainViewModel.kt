@@ -25,7 +25,6 @@ class MainViewModel(
         get() = Dispatchers.Main
 
     val currentProfile = MutableLiveData<Profile>()
-    val searchProfiles = MutableLiveData<List<Profile>>()
 
     suspend fun getStoriesData(): LiveData<List<Stories>> =
         instagramRepository.getStoriesUser(instagramRepository.getProfile("kir_vigen")?.id ?: 0)
@@ -33,12 +32,6 @@ class MainViewModel(
     init {
         CoroutineScope(Dispatchers.Main).launch {
             instagramRepository.loadActualStories(instagramRepository.getProfile("kir_vigen")?.id ?: return@launch)
-        }
-    }
-
-    fun searchProfiles(searchText: String) {
-        viewModelScope.launch {
-            searchProfiles.postValue(instagramRepository.searchProfile(searchText))
         }
     }
 

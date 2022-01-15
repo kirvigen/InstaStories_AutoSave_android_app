@@ -1,58 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/container"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingVertical="4dp">
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="4dp">
 
-    <FrameLayout
-        android:layout_width="70dp"
-        android:layout_height="70dp">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bg_block"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foreground="?selectableItemBackground"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/bg"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/bg_changed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@color/gray_16" />
+            android:scaleType="centerCrop"
+            app:srcCompat="@color/gray_border" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/bg_instagram"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bg_scaled"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/gradient_instagram"
-            android:visibility="gone" />
+            android:background="@color/white"
+            android:scaleX="0.98"
+            android:scaleY="0.98"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp" />
+    </androidx.cardview.widget.CardView>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/nickname"
-        style="@style/FontBold"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textSize="10sp"
-        tools:text="kir_vigen" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="20dp">
 
-    <TextView
-        android:id="@+id/name"
-        style="@style/FontBold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-2dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/gray_50"
-        android:textSize="8sp"
-        tools:text="kir_vigen" />
+        <FrameLayout
+            android:layout_width="70dp"
+            android:layout_height="70dp">
 
-</LinearLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/gray_16" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/bg_instagram"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/gradient_instagram"
+                android:visibility="gone" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/nickname"
+            style="@style/FontBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            tools:text="kir_vigen" />
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/FontBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/gray_50"
+            android:textSize="8sp"
+            tools:text="kir_vigen" />
+
+    </LinearLayout>
+
+</FrameLayout>

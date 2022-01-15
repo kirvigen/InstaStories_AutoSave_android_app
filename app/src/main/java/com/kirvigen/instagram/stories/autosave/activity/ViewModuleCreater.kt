@@ -1,6 +1,8 @@
 package com.kirvigen.instagram.stories.autosave.activity
 
 import com.kirvigen.instagram.stories.autosave.activity.mainScreen.MainViewModel
+import com.kirvigen.instagram.stories.autosave.activity.selectUserScreen.SelectedProfilesActivity
+import com.kirvigen.instagram.stories.autosave.activity.selectUserScreen.SelectedProfilesViewModel
 import com.kirvigen.instagram.stories.autosave.activity.viewerStories.ViewerStoriesActivity
 import com.kirvigen.instagram.stories.autosave.activity.viewerStories.ViewerStoriesViewModel
 import com.kirvigen.instagram.stories.autosave.activity.viewerStories.storiesFragment.StoriesViewModule
@@ -14,5 +16,6 @@ object ViewModuleCreater {
         viewModel { MainViewModel(get(), get()) }
         viewModel { (stories: Stories) -> StoriesViewModule(stories, get()) }
         viewModel { (stories: Stories) -> ViewerStoriesViewModel(stories, get()) }
+        viewModel { SelectedProfilesViewModel(get()) }
     }
 }

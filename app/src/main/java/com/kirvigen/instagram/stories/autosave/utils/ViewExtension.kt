@@ -57,6 +57,22 @@ fun View?.animateAlpha(alpha: Float, endCallback: (() -> Unit)? = null) {
         ?.start()
 }
 
+fun View?.animateScale(scale: Float, animated: Boolean = true, endCallback: (() -> Unit)? = null) {
+    this?.animate()
+        ?.scaleY(scale)
+        ?.scaleX(scale)
+        ?.withEndAction {
+            endCallback?.invoke()
+        }?.apply {
+            duration = if (!animated)
+                0
+            else {
+                150
+            }
+        }
+        ?.start()
+}
+
 fun Activity.setTransparentStatusBar() {
     window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
