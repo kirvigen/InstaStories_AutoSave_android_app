@@ -10,17 +10,19 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.AsyncListDiffer
 
-class ProfileAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProfileAdapter(
+    private val selectedProfilerChanged: () -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ProfileSelector {
     private val profiles = AsyncListDiffer(this, DIFF_CALLBACK)
     private val selectedProfile: MutableList<Profile> = mutableListOf()
 
     fun setData(profiles: List<Profile>) {
-        val mutableList = profiles.toMutableList()
+        val mutableList = profiles.toMutableList() as MutableList<Any>
         mutableList.addAll(mutableList.lastIndex + 1, selectedProfile)
-        this.profiles.submitList(mutableList.distinct())
+        this.profiles.submitList(mutableList.distinctBy { if (it is Profile) it.id else -1 })
     }
 
-    fun getSelectedProfiles(): List<Profile> = selectedProfile
+    fun getSelectedProfiles(): List<Profile> = selectedProfile.toList()
 
     override fun onViewDetachedFromWindow(holder: RecyclerView.ViewHolder) {
         (holder as ProfileViewHolder).clearAnimation()
@@ -32,24 +34,38 @@ class ProfileAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemBinding = ItemProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ProfileViewHolder(selectedProfile, itemBinding)
+        return ProfileViewHolder(itemBinding, this)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val profile = profiles.currentList[position]
-        (holder as? ProfileViewHolder)?.bind(profile, profile in selectedProfile)
+        (holder as? ProfileViewHolder)?.bind((profile as? Profile) ?: return, profile in selectedProfile)
     }
 
     override fun getItemCount(): Int = profiles.currentList.size
+
+    override fun onUnselect(profile: Profile) {
+        selectedProfile.remove(profile)
+        selectedProfilerChanged.invoke()
+    }
+
+    override fun onSelect(profile: Profile) {
+        selectedProfile.add(profile)
+        selectedProfilerChanged.invoke()
+    }
 }
 
-private val DIFF_CALLBACK: DiffUtil.ItemCallback<Profile> =
-    object : DiffUtil.ItemCallback<Profile>() {
-        override fun areItemsTheSame(oldProfile: Profile, newProfile: Profile): Boolean {
-            return oldProfile.id == newProfile.id
+private val DIFF_CALLBACK =
+    object : DiffUtil.ItemCallback<Any>() {
+        override fun areItemsTheSame(objOld: Any, objNew: Any): Boolean {
+            return objOld == objNew
         }
 
-        override fun areContentsTheSame(oldProfile: Profile, newProfile: Profile): Boolean {
-            return oldProfile.name == newProfile.name
+        override fun areContentsTheSame(objOld: Any, objNew: Any): Boolean {
+            return if (objOld is Profile && objNew is Profile) {
+                objOld.name == objNew.name
+            } else {
+                false
+            }
         }
     }

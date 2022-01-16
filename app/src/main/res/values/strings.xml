@@ -8,4 +8,9 @@
     <string name="welcome_body_title">Чтобы начать сохранять истории из instagram нужно войти в аккаунт</string>
     <string name="auth_btn_title">Войти</string>
     <string name="search">Поиск</string>
+    <string name="selected_user">Выбранные пользователи:</string>
+    <string name="added_user">Добавить пользователей</string>
+    <string name="select_users">Выбраннно пользователей: %d</string>
+    <string name="using_search">Воспользуйтесь поиском!</string>
+    <string name="using_search_subtitle">Найдите аккаунты, для которых хотите создать свой личный архив историй</string>
 </resources>

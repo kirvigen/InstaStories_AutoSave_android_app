@@ -5,31 +5,40 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class SelectedProfilesViewModel(
     private val instagramRepository: InstagramRepository
-) : ViewModel() {
+) : ViewModel(), CoroutineScope {
 
     val profilesSearch = MutableLiveData<List<Profile>>()
-    private var jobSearch: Job? = null
+    private var job: Job? = null
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO
 
     fun search(searchText: String) {
-        jobSearch?.cancel()
+        job?.cancel()
         if (searchText.isEmpty()) {
             profilesSearch.postValue(emptyList())
         } else {
-            jobSearch = viewModelScope.launch {
+            job = launch {
                 delay(DELAY_SEARCH)
-                profilesSearch.postValue(instagramRepository.searchProfile(searchText))
+                val profiles = instagramRepository.searchProfile(searchText)
+                delay(DELAY_SEARCH)
+                profilesSearch.postValue(profiles)
             }
-            jobSearch?.start()
+            job?.start()
         }
     }
 
     companion object {
-        private val DELAY_SEARCH = 400L
+        private val DELAY_SEARCH = 200L
     }
 }

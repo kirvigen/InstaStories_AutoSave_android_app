@@ -2,11 +2,13 @@ package com.kirvigen.instagram.stories.autosave.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -78,4 +80,14 @@ fun Activity.setTransparentStatusBar() {
     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
     window.statusBarColor = Color.argb(0, 0, 0, 0)
+}
+
+fun View?.hideKeyboard() {
+    val imm = this?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    imm?.hideSoftInputFromWindow(this?.windowToken ?: return, 0)
+}
+
+fun View?.showKeyboard() {
+    val inputMethodManager = this?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
 }

@@ -32,7 +32,7 @@
             android:background="@color/white"
             android:scaleX="0.98"
             android:scaleY="0.98"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="9dp"
             app:cardElevation="0dp" />
     </androidx.cardview.widget.CardView>
 
@@ -71,6 +71,7 @@
             style="@style/FontBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/black"
@@ -82,6 +83,7 @@
             style="@style/FontBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:layout_marginTop="-2dp"
             android:ellipsize="end"
             android:maxLines="1"

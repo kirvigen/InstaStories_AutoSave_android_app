@@ -4,14 +4,15 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.kirvigen.instagram.stories.autosave.R
+import com.kirvigen.instagram.stories.autosave.activity.selectUserScreen.adapterProfiles.ProfileSelector
 import com.kirvigen.instagram.stories.autosave.databinding.ItemProfileBinding
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.utils.animateScale
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
 
 class ProfileViewHolder(
-    private val selectedList: MutableList<Profile>,
-    private val binding: ItemProfileBinding
+    private val binding: ItemProfileBinding,
+    private val selector: ProfileSelector
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private var selectedLocal: Boolean = false
@@ -24,10 +25,10 @@ class ProfileViewHolder(
 
         binding.container.setOnClickListener {
             if (selectedLocal) {
-                selectedList.remove(profile)
+                selector.onUnselect(profile)
                 setUnselectState()
             } else {
-                selectedList.add(profile)
+                selector.onSelect(profile)
                 setSelectState()
             }
             selectedLocal = !selectedLocal
@@ -44,6 +45,7 @@ class ProfileViewHolder(
 
     fun clearAnimation() {
         binding.profileImage.clearAnimation()
+        binding.bgScaled.clearAnimation()
     }
 
     private fun setSelectState(animated: Boolean = true) {
@@ -93,6 +95,6 @@ class ProfileViewHolder(
 
     companion object {
         private const val SCALE_BORDER = 0.97f
-        private const val SCALE_SELECTED_IMAGE = 0.8f
+        private const val SCALE_SELECTED_IMAGE = 0.85f
     }
 }
