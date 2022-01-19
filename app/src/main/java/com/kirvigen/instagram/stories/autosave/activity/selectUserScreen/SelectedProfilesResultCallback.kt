@@ -9,7 +9,7 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 
 class SelectedProfilesResultCallback : ActivityResultContract<String?, List<Profile>?>() {
     override fun createIntent(context: Context, input: String?): Intent {
-        return Intent(context, WebInstaAuthActivity::class.java)
+        return Intent(context, SelectedProfilesActivity::class.java)
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): List<Profile>? {

@@ -1,6 +1,8 @@
 package com.kirvigen.instagram.stories.autosave.activity.selectUserScreen
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.view.inputmethod.EditorInfo
@@ -17,14 +19,17 @@ import com.kirvigen.instagram.stories.autosave.utils.animateAlpha
 import com.kirvigen.instagram.stories.autosave.utils.hideKeyboard
 import com.kirvigen.instagram.stories.autosave.utils.showKeyboard
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.ArrayList
 
 class SelectedProfilesActivity : AppCompatActivity() {
 
     private val viewModel: SelectedProfilesViewModel by viewModel()
     private var binding: ActivitySelectedProfilesBinding? = null
-    private val adapterProfiles = ProfileAdapter {
+    private val adapterProfiles = ProfileAdapter({
         changedSelectedUser()
-    }
+    }, {
+        true
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,9 +104,34 @@ class SelectedProfilesActivity : AppCompatActivity() {
         binding?.searchProfiles.showKeyboard()
     }
 
+    private fun initBtnSuccess() {
+        binding?.btnSuccess?.setBackgroundResource(R.drawable.btn_accent_bg)
+        binding?.btnSuccess?.setOnClickListener {
+            binding?.btnSuccess?.setOnClickListener(null)
+            val intent = Intent().apply {
+                putParcelableArrayListExtra(
+                    SelectedProfilesResultCallback.KEY_RESULT_PROFILES_RESULT,
+                    adapterProfiles.getSelectedProfiles() as ArrayList<out Parcelable>
+                )
+            }
+            setResult(RESULT_OK, intent)
+            finish()
+        }
+    }
+
+    private fun disableBtnSuccess() {
+        binding?.btnSuccess?.setBackgroundResource(R.drawable.btn_disable_bg)
+        binding?.btnSuccess?.setOnClickListener(null)
+    }
+
     private fun changedSelectedUser() {
         val count = adapterProfiles.getSelectedProfiles().size
         binding?.selectedUser?.text = getString(R.string.select_users, count)
         binding?.selectedUser?.isVisible = count != 0
+        if (count == 0) {
+            disableBtnSuccess()
+        } else {
+            initBtnSuccess()
+        }
     }
 }

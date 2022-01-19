@@ -39,6 +39,6 @@ class SelectedProfilesViewModel(
     }
 
     companion object {
-        private val DELAY_SEARCH = 200L
+        private val DELAY_SEARCH = 100L
     }
 }

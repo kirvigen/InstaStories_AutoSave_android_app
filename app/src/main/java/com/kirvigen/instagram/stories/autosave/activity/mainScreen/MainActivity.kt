@@ -2,12 +2,14 @@ package com.kirvigen.instagram.stories.autosave.activity.mainScreen
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.kirvigen.instagram.stories.autosave.activity.selectUserScreen.adapterProfiles.ProfileAdapter
+import com.kirvigen.instagram.stories.autosave.activity.instagramAuth.AuthInstagramResultCallback
 import com.kirvigen.instagram.stories.autosave.activity.mainScreen.adapterStories.StoriesAdapter
 import com.kirvigen.instagram.stories.autosave.activity.selectUserScreen.SelectedProfilesActivity
+import com.kirvigen.instagram.stories.autosave.activity.selectUserScreen.SelectedProfilesResultCallback
 import com.kirvigen.instagram.stories.autosave.databinding.ActivityMainBinding
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
@@ -21,6 +23,9 @@ class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModel()
     private var binding: ActivityMainBinding? = null
+    private val searchOtherProfiles = registerForActivityResult(SelectedProfilesResultCallback()) {
+         Log.e(this.javaClass.simpleName, it.toString())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        startActivity(Intent(this, SelectedProfilesActivity::class.java))
+        searchOtherProfiles.launch("")
     }
 
     private fun setStoriesData(storiesData: List<Stories>) {

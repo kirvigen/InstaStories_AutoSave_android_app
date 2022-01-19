@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.AsyncListDiffer
 
 class ProfileAdapter(
-    private val selectedProfilerChanged: () -> Unit
+    private val selectedProfilerChanged: () -> Unit,
+    private val selectPossible: (Int) -> Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), ProfileSelector {
     private val profiles = AsyncListDiffer(this, DIFF_CALLBACK)
     private val selectedProfile: MutableList<Profile> = mutableListOf()
@@ -50,8 +51,10 @@ class ProfileAdapter(
     }
 
     override fun onSelect(profile: Profile) {
-        selectedProfile.add(profile)
-        selectedProfilerChanged.invoke()
+        if (selectPossible.invoke(selectedProfile.size)) {
+            selectedProfile.add(profile)
+            selectedProfilerChanged.invoke()
+        }
     }
 }
 
