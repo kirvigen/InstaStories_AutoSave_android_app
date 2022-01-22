@@ -14,15 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InstStoriesAutoSave">
         <activity
-            android:name=".activity.selectUserScreen.SelectedProfilesActivity"
+            android:name=".ui.selectUserScreen.SelectedProfilesActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.viewerStories.ViewerStoriesActivity"
+            android:name=".ui.viewerStories.ViewerStoriesActivity"
             android:exported="false"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.InstStoriesAutoSave.ViewerStories" />
         <activity
-            android:name=".activity.welcomeScreen.WelcomeActivity"
+            android:name=".ui.welcomeScreen.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,10 +31,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.mainScreen.MainActivity"
+            android:name=".ui.mainScreen.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.instagramAuth.WebInstaAuthActivity"
+            android:name=".ui.instagramAuth.WebInstaAuthActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustNothing" />
     </application>

@@ -1,7 +1,7 @@
 package com.kirvigen.instagram.stories.autosave
 
 import android.app.Application
-import com.kirvigen.instagram.stories.autosave.activity.ViewModuleCreater
+import com.kirvigen.instagram.stories.autosave.ui.ViewModuleCreater
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

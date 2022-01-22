@@ -13,4 +13,7 @@
     <string name="select_users">Выбраннно пользователей: %d</string>
     <string name="using_search">Воспользуйтесь поиском!</string>
     <string name="using_search_subtitle">Найдите аккаунты, для которых хотите создать свой личный архив историй</string>
+    <string name="dialog_permissions_denied_head">Разрешения не выданы</string>
+    <string name="dialog_permissions_denied_body">Не выданы разрешения для корректной работы приложения в фоновом режиме</string>
+    <string name="retry">Повторить</string>
 </resources>

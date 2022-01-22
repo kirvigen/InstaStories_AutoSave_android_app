@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:alpha="0"
     android:layout_height="match_parent"
-    tools:context=".activity.welcomeScreen.WelcomeActivity">
+    tools:context=".ui.welcomeScreen.WelcomeActivity">
 
     <TextView
         android:id="@+id/head_title"

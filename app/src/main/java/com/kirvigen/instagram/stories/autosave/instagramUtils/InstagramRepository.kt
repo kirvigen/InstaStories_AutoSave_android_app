@@ -11,7 +11,9 @@ interface InstagramRepository {
 
     fun getInstagramCookies(): String
 
-    fun saveAuthHeaders(headers: Map<String, String>)
+    fun saveInstagramCookies(cookies: String)
+
+    fun saveInstagramHeaders(headers: Map<String, String>)
 
     suspend fun searchProfile(searchText: String): List<Profile>
 
@@ -19,9 +21,7 @@ interface InstagramRepository {
 
     suspend fun getProfile(stories: Stories): Profile?
 
-    suspend fun getCurrentProfile(refresh: Boolean = false): Profile?
-
-    suspend fun wipeCurrentProfile()
+    suspend fun getCurrentProfile(): Profile?
 
     suspend fun getProfile(nickname: String): Profile?
 }

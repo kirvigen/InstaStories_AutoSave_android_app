@@ -9,10 +9,7 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.instagramUtils.db.ProfileDao
 import com.kirvigen.instagram.stories.autosave.instagramUtils.db.StoriesDao
-import com.kirvigen.instagram.stories.autosave.utils.BadResponseException
-import com.kirvigen.instagram.stories.autosave.utils.MyResult
 import com.kirvigen.instagram.stories.autosave.utils.OkHttpClientCoroutine
-import com.kirvigen.instagram.stories.autosave.utils.ParseResponseException
 import com.kirvigen.instagram.stories.autosave.utils.toStrResponse
 import com.kirvigen.instagram.stories.autosave.utils.valueOrNull
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.json.JSONObject
-import org.koin.core.qualifier.named
 import java.lang.reflect.Type
 import kotlin.coroutines.CoroutineContext
 
@@ -34,18 +30,15 @@ class InstagramRepositoryImpl(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    override fun getInstagramCookies(): String {
-        val manager = CookieManager.getInstance()
-        manager?.flush()
-        return manager?.getCookie(INSTAGRAM_MAIN_URL) ?: ""
+    override fun saveInstagramCookies(cookies: String) {
+        sharedPreferences.edit().putString(SAVED_COOKIES_KEY, cookies).apply()
     }
 
-    override suspend fun getCurrentProfile(refresh: Boolean): Profile? {
-        val savedProfile = profileDao.getCorrectProfile()
-        if (savedProfile != null && !refresh) return savedProfile
+    override fun getInstagramCookies(): String = sharedPreferences.getString(SAVED_COOKIES_KEY, "") ?: ""
 
+    override suspend fun getCurrentProfile(): Profile? {
         val response = okHttpClientCoroutine.newCall(
-            OkHttpClientCoroutine.buildGetRequest(INSTAGRAM_MAIN_URL, getLocalHeaders())
+            OkHttpClientCoroutine.buildGetRequest(INSTAGRAM_MAIN_URL, getInstagramHeaders())
         ).toStrResponse() ?: ""
 
         val profile = valueOrNull {
@@ -60,17 +53,7 @@ class InstagramRepositoryImpl(
             return@valueOrNull Profile(id, photo, username, description, username, true)
         }
 
-        coroutineScope { async(Dispatchers.IO) { profileDao.insert(profile ?: return@async) } }
-
         return profile
-    }
-
-    override suspend fun wipeCurrentProfile() {
-        saveAuthHeaders(mapOf())
-        CookieManager.getInstance()?.setCookie(INSTAGRAM_MAIN_URL, "")
-        CookieManager.getInstance()?.flush()
-
-//        profileDao.deleteProfile(profileDao.getCorrectProfile() ?: return)
     }
 
     override fun getStoriesUser(userId: Long): LiveData<List<Stories>> = storiesDao.getStoriesProfile(userId)
@@ -79,7 +62,7 @@ class InstagramRepositoryImpl(
         val response = okHttpClientCoroutine.newCall(
             OkHttpClientCoroutine.buildGetRequest(
                 "https://i.instagram.com/api/v1/feed/user/$userId/story/",
-                getLocalHeaders()
+                getInstagramHeaders()
             )
         ).toStrResponse() ?: return emptyList()
         val stories = parseStories(response, userId)
@@ -93,7 +76,7 @@ class InstagramRepositoryImpl(
         val response = okHttpClientCoroutine.newCall(
             OkHttpClientCoroutine.buildGetRequest(
                 "https://www.instagram.com/web/search/topsearch/?context=blended&query=${searchText}&rank_token=&include_reel=true",
-                getLocalHeaders()
+                getInstagramHeaders()
             )
         ).toStrResponse() ?: return emptyList()
 
@@ -120,7 +103,7 @@ class InstagramRepositoryImpl(
         if (savedProfile != null) return savedProfile
 
         val response = okHttpClientCoroutine.newCall(
-            OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/${nickname}/", getLocalHeaders())
+            OkHttpClientCoroutine.buildGetRequest("https://www.instagram.com/${nickname}/", getInstagramHeaders())
         ).toStrResponse() ?: return null
 
         val profile = valueOrNull {
@@ -148,12 +131,12 @@ class InstagramRepositoryImpl(
         return profile
     }
 
-    override fun saveAuthHeaders(headers: Map<String, String>) {
+    override fun saveInstagramHeaders(headers: Map<String, String>) {
         val headersJson = Gson().toJson(headers)
         sharedPreferences.edit().putString(SAVED_HEADERS_KEY, headersJson).apply()
     }
 
-    private fun getLocalHeaders(): Map<String, String> {
+    private fun getInstagramHeaders(): Map<String, String> {
         val typeOfMap: Type = object : TypeToken<Map<String, String>>() {}.type
         val headersString = sharedPreferences.getString(SAVED_HEADERS_KEY, "") ?: ""
         return try {
@@ -211,7 +194,8 @@ class InstagramRepositoryImpl(
     }
 
     companion object {
-        private const val INSTAGRAM_MAIN_URL = "https://www.instagram.com/"
+        const val INSTAGRAM_MAIN_URL = "https://www.instagram.com/"
+        private const val SAVED_COOKIES_KEY = "saved_cookies_key"
         private const val SAVED_HEADERS_KEY = "saved_headers_key"
     }
 }
