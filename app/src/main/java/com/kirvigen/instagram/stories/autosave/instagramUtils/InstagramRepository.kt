@@ -15,6 +15,14 @@ interface InstagramRepository {
 
     fun saveInstagramHeaders(headers: Map<String, String>)
 
+    fun getProfiles(): LiveData<List<Profile>>
+
+    fun getStories(): LiveData<List<Stories>>
+
+    fun saveProfiles(profiles: List<Profile>)
+
+    suspend fun getProfilesSync(): List<Profile>
+
     suspend fun searchProfile(searchText: String): List<Profile>
 
     suspend fun loadActualStories(userId: Long): List<Stories>

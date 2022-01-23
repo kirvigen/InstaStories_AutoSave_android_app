@@ -8,10 +8,8 @@ interface SessionInteractor {
     fun saveAuthCookies(cookie: String)
     fun saveAuthHeaders(headers: Map<String, String>)
     fun getCurrentProfile(): Profile?
-    fun isAllPermissionsGranted(): Boolean
     fun checkPermission(context: Context)
     fun isAuth(): Boolean
 
-    suspend fun requestPermission(permissionId: String): Boolean
     suspend fun loadCurrentProfile(): Profile?
 }

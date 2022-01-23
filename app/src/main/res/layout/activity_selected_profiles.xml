@@ -40,6 +40,8 @@
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:focusable="true"
+            android:focusedByDefault="true"
             android:hint="@string/search"
             android:imeOptions="actionSearch"
             android:inputType="text"

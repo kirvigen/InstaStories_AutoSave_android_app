@@ -14,5 +14,6 @@ data class Profile(
     val name: String,
     val description: String = "",
     val nickname: String,
+    val insertTime: Long,
     val isCurrentProfile: Boolean = false
 ) : Parcelable

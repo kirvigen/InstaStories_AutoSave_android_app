@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="100dp"
+    android:layout_height="140dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:tint="@color/black"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_gray_circle"
+        android:padding="10dp"
+        app:srcCompat="@drawable/ic_round_arrow_forward_ios_24" />
+
+    <TextView
+        style="@style/FontRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/all_stories"
+        android:textColor="@color/gray_50"
+        android:textSize="12sp" />
+</FrameLayout>

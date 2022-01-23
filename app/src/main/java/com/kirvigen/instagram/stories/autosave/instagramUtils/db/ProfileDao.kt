@@ -1,5 +1,6 @@
 package com.kirvigen.instagram.stories.autosave.instagramUtils.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -17,10 +18,7 @@ interface ProfileDao {
     suspend fun insert(profile: Profile)
 
     @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 1")
-    suspend fun getCorrectProfile(): Profile?
-
-    @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 0")
-    suspend fun getProfiles(): List<Profile>
+    suspend fun getCurrentProfile(): Profile?
 
     @Query("SELECT * FROM `profile` WHERE id = :profileId")
     suspend fun getProfile(profileId: Long): Profile?
@@ -29,5 +27,11 @@ interface ProfileDao {
     suspend fun getProfile(nickname: String): Profile?
 
     @Query("DELETE FROM `profile` WHERE id = :profileId")
-    suspend fun deleteProfile(profileId: Long);
+    suspend fun deleteProfile(profileId: Long)
+
+    @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 0 ORDER BY `insertTime` ASC")
+    fun getAllProfiles(): LiveData<List<Profile>>
+
+    @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 0")
+    suspend fun getProfilesSync(): List<Profile>
 }

@@ -15,4 +15,11 @@
     <color name="gray_16">#28000000</color>
     <color name="gray_50">#80000000</color>
     <color name="blue">#0095f6</color>
+
+    <!-- Instagram Gradient Colors-->
+    <color name="insta_color_1">#FF2B4FF2</color>
+    <color name="insta_color_2">#FFF04B50</color>
+    <color name="insta_color_3">#FFDB359E</color>
+    <color name="insta_color_4">#FFAC3CB4</color>
+    <color name="insta_color_5">#FFEF802E</color>
 </resources>

@@ -8,6 +8,28 @@
     android:orientation="vertical"
     tools:context=".ui.mainScreen.MainActivity">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/addUserButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        app:cardBackgroundColor="@color/blue"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="15dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_round_person_add_24" />
+
+    </androidx.cardview.widget.CardView>
+
     <LinearLayout
         android:id="@+id/current_profile"
         android:layout_width="match_parent"
@@ -31,13 +53,23 @@
             android:textColor="@color/black" />
     </LinearLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/storiesList"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/current_profile" />
+        app:layout_constraintTop_toBottomOf="@id/current_profile">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/storiesList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="80dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

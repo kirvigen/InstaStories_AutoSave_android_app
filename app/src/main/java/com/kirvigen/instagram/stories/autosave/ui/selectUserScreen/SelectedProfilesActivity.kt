@@ -10,6 +10,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.ui.selectUserScreen.adapterProfiles.ProfileAdapter
@@ -100,8 +101,11 @@ class SelectedProfilesActivity : AppCompatActivity() {
                 true
             } else false
         })
+        binding?.searchProfiles?.post {
+            binding?.searchProfiles?.requestFocus()
+            binding?.searchProfiles.showKeyboard()
+        }
 
-        binding?.searchProfiles.showKeyboard()
     }
 
     private fun initBtnSuccess() {
@@ -111,7 +115,7 @@ class SelectedProfilesActivity : AppCompatActivity() {
             val intent = Intent().apply {
                 putParcelableArrayListExtra(
                     SelectedProfilesResultCallback.KEY_RESULT_PROFILES_RESULT,
-                    adapterProfiles.getSelectedProfiles() as ArrayList<out Parcelable>
+                    ArrayList(adapterProfiles.getSelectedProfiles())
                 )
             }
             setResult(RESULT_OK, intent)

@@ -13,7 +13,9 @@
     <string name="select_users">Выбраннно пользователей: %d</string>
     <string name="using_search">Воспользуйтесь поиском!</string>
     <string name="using_search_subtitle">Найдите аккаунты, для которых хотите создать свой личный архив историй</string>
-    <string name="dialog_permissions_denied_head">Разрешения не выданы</string>
-    <string name="dialog_permissions_denied_body">Не выданы разрешения для корректной работы приложения в фоновом режиме</string>
-    <string name="retry">Повторить</string>
+    <string name="dialog_permissions_denied_head">Выйдайте разрешение</string>
+    <string name="dialog_permissions_battery_denied_body">Добавте приложение в исключение при оптимизации батареи. Чтобы истории пользователей смогли сохранятся в фоновом режием</string>
+    <string name="btn_title_battery_permission_dialog">Дать разрешение</string>
+    <string name="empty_stories">Нет загруженных историй (</string>
+    <string name="all_stories">Все истории</string>
 </resources>

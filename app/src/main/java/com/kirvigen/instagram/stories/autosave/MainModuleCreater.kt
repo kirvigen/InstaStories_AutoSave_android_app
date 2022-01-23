@@ -2,6 +2,8 @@ package com.kirvigen.instagram.stories.autosave
 
 import android.content.Context
 import androidx.room.Room
+import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
+import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractorImpl
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepositoryImpl
 import com.kirvigen.instagram.stories.autosave.instagramUtils.db.InstagramDb
@@ -17,6 +19,7 @@ object MainModuleCreater {
         single { OkHttpClientCoroutine() }
         single { androidContext().getSharedPreferences("LocalStorage", Context.MODE_PRIVATE) }
         single<InstagramRepository> { InstagramRepositoryImpl(get(), get(), get(), get()) }
+        single<InstagramInteractor> { InstagramInteractorImpl(get()) }
         single<SessionInteractor> { SessionInteractorImpl(get(), get(), androidContext()) }
         single {
             Room.databaseBuilder(

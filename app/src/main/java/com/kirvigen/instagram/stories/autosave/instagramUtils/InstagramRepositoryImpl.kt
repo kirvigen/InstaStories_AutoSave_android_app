@@ -1,7 +1,6 @@
 package com.kirvigen.instagram.stories.autosave.instagramUtils
 
 import android.content.SharedPreferences
-import android.webkit.CookieManager
 import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -16,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.lang.reflect.Type
 import kotlin.coroutines.CoroutineContext
@@ -50,7 +50,7 @@ class InstagramRepositoryImpl(
             val username = profileData.getString("username")
             val description = profileData.getString("biography")
             val id = profileData.getLong("id")
-            return@valueOrNull Profile(id, photo, username, description, username, true)
+            return@valueOrNull Profile(id, photo, username, description, username, System.currentTimeMillis(), true)
         }
 
         return profile
@@ -90,7 +90,7 @@ class InstagramRepositoryImpl(
             val description = item.optString("biography") ?: ""
             val photo = item.getString("profile_pic_url")
             val username = item.getString("username")
-            result.add(Profile(id, photo, name, description, username))
+            result.add(Profile(id, photo, name, description, username, System.currentTimeMillis()))
         }
 
         return result
@@ -122,7 +122,7 @@ class InstagramRepositoryImpl(
             val description = userObj.optString("biography") ?: ""
             val photo = userObj.getString("profile_pic_url")
 
-            return@valueOrNull Profile(userId, photo, name, description, nickname)
+            return@valueOrNull Profile(userId, photo, name, description, nickname, System.currentTimeMillis())
 
         }
 
@@ -135,6 +135,18 @@ class InstagramRepositoryImpl(
         val headersJson = Gson().toJson(headers)
         sharedPreferences.edit().putString(SAVED_HEADERS_KEY, headersJson).apply()
     }
+
+    override fun getProfiles(): LiveData<List<Profile>> = profileDao.getAllProfiles()
+
+    override fun getStories(): LiveData<List<Stories>> = storiesDao.getAllStories()
+
+    override fun saveProfiles(profiles: List<Profile>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            profileDao.insert(profiles.map { it.copy(insertTime = System.currentTimeMillis()) })
+        }
+    }
+
+    override suspend fun getProfilesSync(): List<Profile> = profileDao.getProfilesSync()
 
     private fun getInstagramHeaders(): Map<String, String> {
         val typeOfMap: Type = object : TypeToken<Map<String, String>>() {}.type

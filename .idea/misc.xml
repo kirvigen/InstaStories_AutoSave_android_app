@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.39114583333333336" />
+        <entry key="app/src/main/res/drawable/bg_gray_circle.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/bg_outline_search.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/bg_outline_webview.xml" value="0.29384615384615387" />
         <entry key="app/src/main/res/drawable/btn_accent_bg.xml" value="0.3921875" />
@@ -11,6 +12,7 @@
         <entry key="app/src/main/res/drawable/corner_white_rectangle_bg.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/gradient_instagram.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.29384615384615387" />
+        <entry key="app/src/main/res/drawable/item_profile_with_stories.xml" value="0.2984375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23263224984066283" />
         <entry key="app/src/main/res/layout/activity_selected_profiles.xml" value="0.22577692315670486" />
         <entry key="app/src/main/res/layout/activity_viewer_stories.xml" value="0.3619791666666667" />
@@ -18,7 +20,10 @@
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/fragment_view_stories.xml" value="0.24715264291727945" />
         <entry key="app/src/main/res/layout/item_profile.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/item_profile_with_stories.xml" value="0.23777173913043478" />
         <entry key="app/src/main/res/layout/item_stories.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/item_stories_match_parent.xml" value="0.23777173913043478" />
+        <entry key="app/src/main/res/layout/item_view_all_stories.xml" value="0.192481884057971" />
       </map>
     </option>
   </component>

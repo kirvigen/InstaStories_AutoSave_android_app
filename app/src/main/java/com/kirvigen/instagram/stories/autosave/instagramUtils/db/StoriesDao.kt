@@ -16,6 +16,9 @@ interface StoriesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(profile: Stories)
 
-    @Query("SELECT * FROM stories WHERE userId = :profileId")
+    @Query("SELECT * FROM stories WHERE userId = :profileId ORDER BY `date` DESC")
     fun getStoriesProfile(profileId: Long): LiveData<List<Stories>>
+
+    @Query("SELECT * FROM stories ORDER BY `date` DESC")
+    fun getAllStories(): LiveData<List<Stories>>
 }

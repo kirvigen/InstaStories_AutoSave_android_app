@@ -4,6 +4,7 @@
     package="com.kirvigen.instagram.stories.autosave">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission  android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
 
     <application
         android:name=".MyApplication"

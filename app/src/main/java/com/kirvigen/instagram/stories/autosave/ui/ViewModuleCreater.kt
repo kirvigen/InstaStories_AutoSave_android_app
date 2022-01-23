@@ -11,7 +11,7 @@ import org.koin.dsl.module
 object ViewModuleCreater {
 
     fun create() = module {
-        viewModel { MainViewModel(get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
         viewModel { (stories: Stories) -> StoriesViewModule(stories, get()) }
         viewModel { (stories: Stories) -> ViewerStoriesViewModel(stories, get()) }
         viewModel { SelectedProfilesViewModel(get()) }
