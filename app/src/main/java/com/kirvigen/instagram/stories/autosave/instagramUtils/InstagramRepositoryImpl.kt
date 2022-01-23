@@ -50,7 +50,15 @@ class InstagramRepositoryImpl(
             val username = profileData.getString("username")
             val description = profileData.getString("biography")
             val id = profileData.getLong("id")
-            return@valueOrNull Profile(id, photo, username, description, username, System.currentTimeMillis(), true)
+            return@valueOrNull Profile(
+                id,
+                photo,
+                username,
+                description,
+                username,
+                System.currentTimeMillis(),
+                isCurrentProfile = true
+            )
         }
 
         return profile
@@ -67,8 +75,12 @@ class InstagramRepositoryImpl(
         ).toStrResponse() ?: return emptyList()
         val stories = parseStories(response, userId)
 
-        coroutineScope { async(Dispatchers.IO) { storiesDao.insert(stories) } }
-
+        coroutineScope {
+            async(Dispatchers.IO) {
+                storiesDao.insert(stories)
+                profileDao.profileSetLastUpdate(userId)
+            }
+        }
         return stories
     }
 
@@ -80,20 +92,23 @@ class InstagramRepositoryImpl(
             )
         ).toStrResponse() ?: return emptyList()
 
-        val result = mutableListOf<Profile>()
-
-        val arrayObj = JSONObject(response).getJSONArray("users")
-        for (i in 0 until arrayObj.length()) {
-            val item = arrayObj.getJSONObject(i).getJSONObject("user")
-            val id = item.getLong("pk")
-            val name = item.getString("full_name")
-            val description = item.optString("biography") ?: ""
-            val photo = item.getString("profile_pic_url")
-            val username = item.getString("username")
-            result.add(Profile(id, photo, name, description, username, System.currentTimeMillis()))
+        val result = valueOrNull {
+            val list = mutableListOf<Profile>()
+            val arrayObj = JSONObject(response).getJSONArray("users")
+            for (i in 0 until arrayObj.length()) {
+                val item = arrayObj.getJSONObject(i).getJSONObject("user")
+                val id = item.getLong("pk")
+                val name = item.getString("full_name")
+                val description = item.optString("biography") ?: ""
+                val photo = item.getString("profile_pic_url")
+                val username = item.getString("username")
+                list.add(Profile(id, photo, name, description, username, System.currentTimeMillis()))
+            }
+            list
         }
 
-        return result
+
+        return result ?: emptyList()
     }
 
     override suspend fun getProfile(stories: Stories): Profile? = profileDao.getProfile(stories.userId)

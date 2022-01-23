@@ -38,5 +38,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun goToMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

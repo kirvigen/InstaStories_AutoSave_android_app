@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class InstagramInteractorImpl(private val instagramRepository: InstagramRepository) : InstagramInteractor,
@@ -17,10 +18,16 @@ class InstagramInteractorImpl(private val instagramRepository: InstagramReposito
         instagramRepository.saveProfiles(list)
     }
 
-    override suspend fun loadStoriesForAllProfile() {
+    override suspend fun loadStoriesForAllProfile(allUpdate: Boolean) {
         coroutineScope {
             instagramRepository.getProfilesSync().forEach { profile ->
-                async { instagramRepository.loadActualStories(profile.id) }
+                if (allUpdate) {
+                    instagramRepository.loadActualStories(profile.id)
+                } else {
+                    if (System.currentTimeMillis() - profile.lastUpdate > 60 * 60 * 1000) {
+                        instagramRepository.loadActualStories(profile.id)
+                    }
+                }
             }
         }
     }

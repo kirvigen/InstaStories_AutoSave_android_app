@@ -60,9 +60,6 @@ class MainViewModel(
     }
 
     init {
-        CoroutineScope(Dispatchers.Main).launch {
-            instagramRepository.loadActualStories(instagramRepository.getProfile("kir_vigen")?.id ?: return@launch)
-        }
         loadCurrentProfile()
         refreshData()
     }

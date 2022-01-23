@@ -32,6 +32,9 @@ interface ProfileDao {
     @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 0 ORDER BY `insertTime` ASC")
     fun getAllProfiles(): LiveData<List<Profile>>
 
-    @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 0")
+    @Query("SELECT * FROM `profile` WHERE isCurrentProfile = 0 ORDER BY `insertTime` ASC")
     suspend fun getProfilesSync(): List<Profile>
+
+    @Query("UPDATE `profile` SET `lastUpdate` = :lastUpdate WHERE id = :profileId AND isCurrentProfile = 0")
+    suspend fun profileSetLastUpdate(profileId: Long, lastUpdate: Long = System.currentTimeMillis())
 }
