@@ -25,18 +25,6 @@ class ProfileWithStoriesViewHolder(
 
         binding.recyclerStories.addItemDecoration(
             MarginItemDecoration(
-                marginParams = MarginParamsDp(left = 16, right = 2),
-                position = 0
-            )
-        )
-        binding.recyclerStories.addItemDecoration(
-            MarginItemDecoration(
-                marginParams = MarginParamsDp(right = 16, left = 2),
-                position = item.storiesList.lastIndex
-            )
-        )
-        binding.recyclerStories.addItemDecoration(
-            MarginItemDecoration(
                 marginParams = MarginParamsDp(right = 2, left = 2),
                 positionDisable = arrayOf(0, item.storiesList.lastIndex)
             )

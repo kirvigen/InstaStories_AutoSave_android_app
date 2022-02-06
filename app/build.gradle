@@ -10,7 +10,6 @@ android {
     compileSdk 31
 
 
-
     defaultConfig {
         applicationId "com.kirvigen.instagram.stories.autosave"
         minSdk 21
@@ -54,7 +53,7 @@ dependencies {
     //okhttp 3
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
-    
+
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
@@ -97,4 +96,19 @@ dependencies {
 
     //SwipeToRefresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //Lottie
+    implementation "com.airbnb.android:lottie:3.6.0"
+
+    //WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
+
+    //DownloadManager
+    implementation('com.mani:ThinDownloadManager:1.4.0')
+
+    // Core functionality
+    implementation 'com.github.kirich1409:android-notification-dsl-core:0.2.1'
+
+    // Extentions to simoplify work
+    implementation 'com.github.kirich1409:android-notification-dsl-extensions:0.2.1'
 }

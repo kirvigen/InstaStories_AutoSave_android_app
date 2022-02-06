@@ -64,9 +64,6 @@ class MainViewModel(
         refreshData()
     }
 
-    suspend fun getStoriesData(): LiveData<List<Stories>> =
-        instagramRepository.getStoriesUser(instagramRepository.getProfile("kir_vigen")?.id ?: 0)
-
     fun setSelectedUser(profiles: List<Profile>) {
         launch {
             instagramInteractor.savedSelectedProfile(profiles)

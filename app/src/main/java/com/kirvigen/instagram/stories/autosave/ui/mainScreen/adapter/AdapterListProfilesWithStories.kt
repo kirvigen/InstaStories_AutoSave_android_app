@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kirvigen.instagram.stories.autosave.databinding.ItemProfileWithStoriesBinding
+import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.ProfileWithStoriesItem
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.viewHolders.ProfileWithStoriesViewHolder
 
@@ -35,6 +36,15 @@ private val DIFF_CALLBACK =
         }
 
         override fun areContentsTheSame(objOld: ProfileWithStoriesItem, objNew: ProfileWithStoriesItem): Boolean {
-            return objOld.storiesList.size == objNew.storiesList.size
+            if (objOld.storiesList.size == objNew.storiesList.size) {
+                if (objNew.storiesList.isEmpty()) return true
+
+                return (objOld.storiesList.first() as? Stories) == (objNew.storiesList.first() as? Stories)
+            }
+            return false
+        }
+
+        override fun getChangePayload(oldItem: ProfileWithStoriesItem, newItem: ProfileWithStoriesItem): Any? {
+            return super.getChangePayload(oldItem, newItem)
         }
     }

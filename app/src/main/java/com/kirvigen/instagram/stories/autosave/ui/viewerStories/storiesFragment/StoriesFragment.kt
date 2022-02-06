@@ -37,10 +37,10 @@ class StoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.profile.observe(viewLifecycleOwner, { profile ->
+        viewModel.profile.observe(viewLifecycleOwner) { profile ->
             binding?.profileTitle?.text = profile.name
             binding?.profileImage?.loadImage(profile.photo, false)
-        })
+        }
 
         binding?.playerView?.isVisible = stories?.isVideo ?: false
         binding?.imageView?.isVisible = !(stories?.isVideo ?: false)

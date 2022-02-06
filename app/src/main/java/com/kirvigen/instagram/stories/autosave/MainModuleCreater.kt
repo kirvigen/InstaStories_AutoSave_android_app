@@ -19,7 +19,7 @@ object MainModuleCreater {
         single { OkHttpClientCoroutine() }
         single { androidContext().getSharedPreferences("LocalStorage", Context.MODE_PRIVATE) }
         single<InstagramRepository> { InstagramRepositoryImpl(get(), get(), get(), get()) }
-        single<InstagramInteractor> { InstagramInteractorImpl(get()) }
+        single<InstagramInteractor> { InstagramInteractorImpl(androidContext(), get()) }
         single<SessionInteractor> { SessionInteractorImpl(get(), get(), androidContext()) }
         single {
             Room.databaseBuilder(

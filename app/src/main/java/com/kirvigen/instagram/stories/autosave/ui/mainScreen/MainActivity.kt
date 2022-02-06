@@ -1,12 +1,9 @@
 package com.kirvigen.instagram.stories.autosave.ui.mainScreen
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.databinding.ActivityMainBinding
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
@@ -14,8 +11,6 @@ import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.AdapterList
 import com.kirvigen.instagram.stories.autosave.ui.selectUserScreen.SelectedProfilesResultCallback
 import com.kirvigen.instagram.stories.autosave.user.SessionInteractor
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
-import kotlinx.android.synthetic.main.activity_main.refreshLayout
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -33,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
 //        if (binding?.storiesList?.itemDecorationCount == 0) {
 //            binding?.storiesList?.addItemDecoration(
 //                GridSpacingItemDecoration(
@@ -63,15 +57,15 @@ class MainActivity : AppCompatActivity() {
             toColor(R.color.insta_color_4),
             toColor(R.color.insta_color_5)
         )
-        mainViewModel.currentProfile.observe(this, { profile ->
+        mainViewModel.currentProfile.observe(this) { profile ->
             setCurrentProfile(profile)
-        })
-        mainViewModel.mainList.observe(this@MainActivity, { items ->
+        }
+        mainViewModel.mainList.observe(this@MainActivity) { items ->
             mainAdapter.submitData(items)
-        })
-        mainViewModel.refreshingData.observe(this, { isRefresh ->
+        }
+        mainViewModel.refreshingData.observe(this) { isRefresh ->
             binding?.refreshLayout?.isRefreshing = isRefresh
-        })
+        }
     }
 
     private fun setCurrentProfile(profile: Profile) {

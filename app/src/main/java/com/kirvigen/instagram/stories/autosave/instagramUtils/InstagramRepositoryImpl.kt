@@ -66,6 +66,12 @@ class InstagramRepositoryImpl(
 
     override fun getStoriesUser(userId: Long): LiveData<List<Stories>> = storiesDao.getStoriesProfile(userId)
 
+    override suspend fun getStories(profileId: Long) = storiesDao.getStoriesProfileSync(profileId)
+
+    override suspend fun updateStoriesLocalUrl(storiesId: Long, localUrl: String) {
+        storiesDao.updateStoriesLocalUri(storiesId, localUrl)
+    }
+
     override suspend fun loadActualStories(userId: Long): List<Stories> {
         val response = okHttpClientCoroutine.newCall(
             OkHttpClientCoroutine.buildGetRequest(

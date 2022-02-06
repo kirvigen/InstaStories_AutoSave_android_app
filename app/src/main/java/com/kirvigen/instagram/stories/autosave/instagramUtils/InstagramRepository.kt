@@ -27,6 +27,10 @@ interface InstagramRepository {
 
     suspend fun loadActualStories(userId: Long): List<Stories>
 
+    suspend fun updateStoriesLocalUrl(storiesId: Long, localUrl: String)
+
+    suspend fun getStories(profileId: Long): List<Stories>
+
     suspend fun getProfile(stories: Stories): Profile?
 
     suspend fun getCurrentProfile(): Profile?
