@@ -1,72 +1,63 @@
 package com.kirvigen.instagram.stories.autosave.workers
 
-import android.app.NotificationManager
 import android.content.Context
-import android.net.Uri
-import android.os.Build
-import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.kirich1409.androidnotificationdsl.NotificationPriority
-import com.kirich1409.androidnotificationdsl.contentText
-import com.kirich1409.androidnotificationdsl.contentTitle
-import com.kirich1409.androidnotificationdsl.notification
-import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
-import com.kirvigen.instagram.stories.autosave.utils.MyResult
-import com.thin.downloadmanager.DefaultRetryPolicy
-import com.thin.downloadmanager.DownloadRequest
-import com.thin.downloadmanager.DownloadStatusListenerV1
-import com.thin.downloadmanager.ThinDownloadManager
+import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
+import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
+import com.kirvigen.instagram.stories.autosave.utils.NotificationUtils
+import com.kirvigen.instagram.stories.autosave.utils.loadBitmap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 import java.util.concurrent.TimeUnit
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class CheckerWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     private val instagramInteractor by inject(InstagramInteractor::class.java)
+    private val instagramRepository by inject(InstagramRepository::class.java)
 
     override suspend fun doWork(): Result {
-        createNotification(applicationContext, "Стартуем загружать истории")
-        val count = instagramInteractor.loadStoriesForAllProfile(true)
-        createNotification(applicationContext, "Загрузили истории в количестве $count штук")
+        val listStories = instagramInteractor.loadStoriesForAllProfile(true)
+        if (listStories.isEmpty()) return Result.success()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val profiles = instagramRepository.getProfilesSync()
+            val data = listStories
+                .groupBy { it.userId }
+                .map { entry ->
+                    Pair(profiles.find { it.id == entry.key }?.name.toString(), entry.value.size)
+                }
+            var text = ""
+            data.forEach { pair ->
+                text += if (text.isEmpty()) {
+                    "${pair.first} (${pair.second})"
+                } else {
+                    ", ${pair.first} (${pair.second})"
+                }
+            }
+            text = "Загружены истории по профилям: $text"
+            val stories = listStories.first()
+            applicationContext.loadBitmap(stories.localUri) {
+                NotificationUtils.createNotificationImage(applicationContext, it, text)
+            }
+        }
+
         return Result.success()
     }
 
     companion object {
         private const val TAG_WORKER = "instagram_worker"
 
-        private fun createNotification(context: Context, text: String, notificationId: Int = 1000) {
-            val notificationManager = ContextCompat.getSystemService(
-                context,
-                NotificationManager::class.java
-            ) as NotificationManager
-
-            val notification = notification(context, "test_1", smallIcon = R.drawable.ic_stat_name) {
-                contentTitle = "Автоматическое уведомление"
-                contentText = text
-                priority = NotificationPriority.DEFAULT
-            }
-
-            notificationManager.notify(notificationId, notification)
-        }
-
         fun planningWorkers(context: Context) {
             val myConstraints = Constraints.Builder()
-                .apply {
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                        setRequiresDeviceIdle(true)
-//                    }
-                }
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 

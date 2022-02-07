@@ -31,7 +31,6 @@ class MyApplication : Application() {
         CheckerWorker.planningWorkers(applicationContext)
     }
 
-    //Write a createChannel Method inside MainActivity.kt
     private fun createChannel(channelId: String, channelName: String) {
         val notificationManager = ContextCompat.getSystemService(
             this,

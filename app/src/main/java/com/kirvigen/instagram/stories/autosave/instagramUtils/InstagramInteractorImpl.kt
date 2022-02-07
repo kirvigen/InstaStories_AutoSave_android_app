@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
+import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.thin.downloadmanager.DefaultRetryPolicy
 import com.thin.downloadmanager.DownloadRequest
 import com.thin.downloadmanager.DownloadStatusListenerV1
@@ -31,8 +32,8 @@ class InstagramInteractorImpl(
         instagramRepository.saveProfiles(list)
     }
 
-    override suspend fun loadStoriesForAllProfile(allUpdate: Boolean): Int = withContext(Dispatchers.IO) {
-        var countLoaded = 0
+    override suspend fun loadStoriesForAllProfile(allUpdate: Boolean): List<Stories> = withContext(Dispatchers.IO) {
+        val storiesLoaded = mutableListOf<Stories>()
         instagramRepository.getProfilesSync().forEach { profile ->
             val oldStories = instagramRepository.getStories(profile.id).toMutableList()
             if (System.currentTimeMillis() - profile.lastUpdate > 60 * 60 * 1000) {
@@ -46,7 +47,7 @@ class InstagramInteractorImpl(
                     Log.e(TAG, "start download ${stories.id}")
                     val pathDownloaded = downloadFile(stories.sourceMedia)
                     pathDownloaded?.let { localUrl ->
-                        countLoaded += 1
+                        storiesLoaded.add(stories)
                         instagramRepository.updateStoriesLocalUrl(stories.id, localUrl)
                     }
 
@@ -56,7 +57,7 @@ class InstagramInteractorImpl(
                 }
             }
         }
-        return@withContext countLoaded
+        return@withContext storiesLoaded
     }
 
     private suspend fun downloadFile(url: String): String? = suspendCoroutine { ret ->

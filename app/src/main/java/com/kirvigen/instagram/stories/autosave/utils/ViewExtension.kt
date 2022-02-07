@@ -3,6 +3,7 @@ package com.kirvigen.instagram.stories.autosave.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -15,7 +16,9 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 
 @SuppressLint("CheckResult")
 fun ImageView?.loadImage(url: String, crossFade: Boolean = true) {
@@ -90,4 +93,15 @@ fun View?.hideKeyboard() {
 fun View?.showKeyboard() {
     val inputMethodManager = this?.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
     inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
+}
+
+fun Context?.loadBitmap(url: String, callback: (Bitmap) -> Unit) {
+    Glide.with(this ?: return)
+        .asBitmap()
+        .load(url)
+        .into(object : SimpleTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                callback(resource)
+            }
+        });
 }
