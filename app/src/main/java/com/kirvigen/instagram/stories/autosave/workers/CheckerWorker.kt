@@ -71,7 +71,7 @@ class CheckerWorker(context: Context, params: WorkerParameters) : CoroutineWorke
                 .build()
 
             val refreshCpnWork =
-                PeriodicWorkRequest.Builder(CheckerWorker::class.java, 60, TimeUnit.MINUTES, 10, TimeUnit.MINUTES)
+                PeriodicWorkRequest.Builder(CheckerWorker::class.java, 60, TimeUnit.MINUTES, 50, TimeUnit.MINUTES)
                     .setConstraints(myConstraints)
                     .addTag(TAG_WORKER)
                     .build()
