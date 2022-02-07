@@ -31,33 +31,32 @@ class InstagramInteractorImpl(
         instagramRepository.saveProfiles(list)
     }
 
-    override suspend fun loadStoriesForAllProfile(allUpdate: Boolean) {
-        withContext(Dispatchers.IO) {
-            instagramRepository.getProfilesSync().forEach { profile ->
-                initLoaded(profile)
+    override suspend fun loadStoriesForAllProfile(allUpdate: Boolean): Int = withContext(Dispatchers.IO) {
+        var countLoaded = 0
+        instagramRepository.getProfilesSync().forEach { profile ->
+            val oldStories = instagramRepository.getStories(profile.id).toMutableList()
+            if (System.currentTimeMillis() - profile.lastUpdate > 60 * 60 * 1000) {
+                val loadedStories = instagramRepository.loadActualStories(profile.id)
+                oldStories.addAll(loadedStories)
             }
-        }
-    }
 
-    private suspend fun initLoaded(profile: Profile) {
-        val oldStories = instagramRepository.getStories(profile.id).toMutableList()
-        if (System.currentTimeMillis() - profile.lastUpdate > 60 * 60 * 1000) {
-            val loadedStories = instagramRepository.loadActualStories(profile.id)
-            oldStories.addAll(loadedStories)
-        }
+            val storiesNotLoad = oldStories.distinctBy { it.id }.filter { it.localUri == "" }
+            CoroutineScope(Dispatchers.IO).launch {
+                storiesNotLoad.forEach { stories ->
+                    Log.e(TAG, "start download ${stories.id}")
+                    val pathDownloaded = downloadFile(stories.sourceMedia)
+                    pathDownloaded?.let { localUrl ->
+                        countLoaded += 1
+                        instagramRepository.updateStoriesLocalUrl(stories.id, localUrl)
+                    }
 
-        val storiesNotLoad = oldStories.distinctBy { it.id }.filter { it.localUri == "" }
-        CoroutineScope(Dispatchers.IO).launch {
-            storiesNotLoad.forEach { stories ->
-                Log.e(TAG, "start download ${stories.id}")
-                val pathDownloaded = downloadFile(stories.sourceMedia)
-                pathDownloaded?.let { localUrl ->
-                    instagramRepository.updateStoriesLocalUrl(stories.id, localUrl)
+                    val status = if (pathDownloaded == null) "failed" else "success"
+
+                    Log.e(TAG, "$status download ${stories.id}")
                 }
-                val status = if (pathDownloaded == null) "failed" else "success"
-                Log.e(TAG, "$status download ${stories.id}")
             }
         }
+        return@withContext countLoaded
     }
 
     private suspend fun downloadFile(url: String): String? = suspendCoroutine { ret ->

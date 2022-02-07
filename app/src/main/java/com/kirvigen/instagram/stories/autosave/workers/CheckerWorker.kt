@@ -37,8 +37,8 @@ class CheckerWorker(context: Context, params: WorkerParameters) : CoroutineWorke
 
     override suspend fun doWork(): Result {
         createNotification(applicationContext, "Стартуем загружать истории")
-        instagramInteractor.loadStoriesForAllProfile(true)
-        createNotification(applicationContext, "Закончили загружать истории")
+        val count = instagramInteractor.loadStoriesForAllProfile(true)
+        createNotification(applicationContext, "Загрузили истории в количестве $count штук")
         return Result.success()
     }
 
@@ -71,7 +71,7 @@ class CheckerWorker(context: Context, params: WorkerParameters) : CoroutineWorke
                 .build()
 
             val refreshCpnWork =
-                PeriodicWorkRequest.Builder(CheckerWorker::class.java, 15, TimeUnit.MINUTES, 5, TimeUnit.MINUTES)
+                PeriodicWorkRequest.Builder(CheckerWorker::class.java, 60, TimeUnit.MINUTES, 10, TimeUnit.MINUTES)
                     .setConstraints(myConstraints)
                     .addTag(TAG_WORKER)
                     .build()

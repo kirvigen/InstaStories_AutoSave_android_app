@@ -4,7 +4,7 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 
 interface InstagramInteractor {
 
-    suspend fun loadStoriesForAllProfile(allUpdate: Boolean = false)
+    suspend fun loadStoriesForAllProfile(allUpdate: Boolean = false): Int
 
     fun savedSelectedProfile(list: List<Profile>)
 
