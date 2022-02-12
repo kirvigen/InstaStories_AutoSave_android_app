@@ -13,6 +13,8 @@ interface InstagramRepository {
 
     fun saveInstagramCookies(cookies: String)
 
+    fun deleteProfile(profileId: Long)
+
     fun saveInstagramHeaders(headers: Map<String, String>)
 
     fun getProfiles(): LiveData<List<Profile>>
@@ -33,7 +35,9 @@ interface InstagramRepository {
 
     suspend fun getProfile(stories: Stories): Profile?
 
-    suspend fun getCurrentProfile(): Profile?
+    suspend fun getProfile(profileId: Long): Profile?
 
     suspend fun getProfile(nickname: String): Profile?
+
+    suspend fun getCurrentProfile(): Profile?
 }

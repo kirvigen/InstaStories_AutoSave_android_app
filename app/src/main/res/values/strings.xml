@@ -18,4 +18,6 @@
     <string name="btn_title_battery_permission_dialog">Дать разрешение</string>
     <string name="empty_stories">Нет загруженных историй (</string>
     <string name="all_stories">Все истории</string>
+    <string name="delete">Удалить</string>
+    <string name="go_to_instagram">Открыть в Instagram</string>
 </resources>

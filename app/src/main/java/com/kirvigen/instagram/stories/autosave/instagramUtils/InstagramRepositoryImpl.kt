@@ -34,6 +34,10 @@ class InstagramRepositoryImpl(
         sharedPreferences.edit().putString(SAVED_COOKIES_KEY, cookies).apply()
     }
 
+    override fun deleteProfile(profileId: Long) {
+        launch { profileDao.deleteProfile(profileId) }
+    }
+
     override fun getInstagramCookies(): String = sharedPreferences.getString(SAVED_COOKIES_KEY, "") ?: ""
 
     override suspend fun getCurrentProfile(): Profile? {
@@ -118,6 +122,8 @@ class InstagramRepositoryImpl(
     }
 
     override suspend fun getProfile(stories: Stories): Profile? = profileDao.getProfile(stories.userId)
+
+    override suspend fun getProfile(profileId: Long): Profile? = profileDao.getProfile(profileId)
 
     override suspend fun getProfile(nickname: String): Profile? {
         val savedProfile = profileDao.getProfile(nickname)

@@ -18,39 +18,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class CheckerWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     private val instagramInteractor by inject(InstagramInteractor::class.java)
-    private val instagramRepository by inject(InstagramRepository::class.java)
 
     override suspend fun doWork(): Result {
+        NotificationUtils.createNotification(applicationContext, "Стартуем загружать истории")
         val listStories = instagramInteractor.loadStoriesForAllProfile(true)
-        if (listStories.isEmpty()) return Result.success()
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val profiles = instagramRepository.getProfilesSync()
-            val data = listStories
-                .groupBy { it.userId }
-                .map { entry ->
-                    Pair(profiles.find { it.id == entry.key }?.name.toString(), entry.value.size)
-                }
-            var text = ""
-            data.forEach { pair ->
-                text += if (text.isEmpty()) {
-                    "${pair.first} (${pair.second})"
-                } else {
-                    ", ${pair.first} (${pair.second})"
-                }
-            }
-            text = "Загружены истории по профилям: $text"
-            val stories = listStories.first()
-            applicationContext.loadBitmap(stories.localUri) {
-                NotificationUtils.createNotificationImage(applicationContext, it, text)
-            }
+        if (listStories.isEmpty()) {
+            NotificationUtils.createNotification(applicationContext, "Новых историй не обнаружено")
+            return Result.success()
         }
 
-        return Result.success()
+        val text = "Загружены истории: ${listStories.size}"
+        val stories = listStories.first()
+
+        return suspendCoroutine { ret ->
+            applicationContext.loadBitmap(stories.localUri) {
+                NotificationUtils.createNotificationImage(applicationContext, it, text)
+                ret.resume(Result.success())
+            }
+        }
     }
 
     companion object {

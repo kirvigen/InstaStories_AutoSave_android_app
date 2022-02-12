@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kirvigen.instagram.stories.autosave.databinding.ItemProfileWithStoriesBinding
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
+import com.kirvigen.instagram.stories.autosave.ui.mainScreen.MenuProfileCreator
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.ProfileWithStoriesItem
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.viewHolders.ProfileWithStoriesViewHolder
 
-class AdapterListProfilesWithStories : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AdapterListProfilesWithStories(
+    private val menuProfileCallbacks: MenuProfileCreator.MenuProfileCallbacks
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items = AsyncListDiffer(this, DIFF_CALLBACK)
 
     fun submitData(list: List<ProfileWithStoriesItem>) {
@@ -19,7 +22,7 @@ class AdapterListProfilesWithStories : RecyclerView.Adapter<RecyclerView.ViewHol
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemBinding = ItemProfileWithStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ProfileWithStoriesViewHolder(itemBinding)
+        return ProfileWithStoriesViewHolder(itemBinding, menuProfileCallbacks)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -39,12 +42,8 @@ private val DIFF_CALLBACK =
             if (objOld.storiesList.size == objNew.storiesList.size) {
                 if (objNew.storiesList.isEmpty()) return true
 
-                return (objOld.storiesList.first() as? Stories) == (objNew.storiesList.first() as? Stories)
+                return (objOld.storiesList.first() as? Stories)?.id == (objNew.storiesList.first() as? Stories)?.id
             }
             return false
-        }
-
-        override fun getChangePayload(oldItem: ProfileWithStoriesItem, newItem: ProfileWithStoriesItem): Any? {
-            return super.getChangePayload(oldItem, newItem)
         }
     }

@@ -1,10 +1,14 @@
 package com.kirvigen.instagram.stories.autosave.ui.mainScreen
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
+import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepositoryImpl
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.GoToAllItem
@@ -68,6 +72,21 @@ class MainViewModel(
         launch {
             instagramInteractor.savedSelectedProfile(profiles)
             refreshData(true)
+        }
+    }
+
+    fun goToProfileInstagram(profileId: Long, context: Context) {
+        launch {
+            val url =  InstagramRepositoryImpl.INSTAGRAM_MAIN_URL + instagramRepository.getProfile(profileId)?.nickname
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            context.startActivity(i)
+        }
+    }
+
+    fun deleteProfile(profileId: Long) {
+        launch {
+            instagramRepository.deleteProfile(profileId)
         }
     }
 

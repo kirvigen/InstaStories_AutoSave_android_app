@@ -14,12 +14,12 @@ import com.kirvigen.instagram.stories.autosave.utils.loadImage
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MenuProfileCreator.MenuProfileCallbacks {
 
     private val mainViewModel: MainViewModel by viewModel()
     private val sessionInteractor: SessionInteractor by inject()
     private var binding: ActivityMainBinding? = null
-    private val mainAdapter: AdapterListProfilesWithStories = AdapterListProfilesWithStories()
+    private val mainAdapter: AdapterListProfilesWithStories = AdapterListProfilesWithStories(this)
     private val searchOtherProfiles = registerForActivityResult(SelectedProfilesResultCallback()) { profile ->
         profile?.let { mainViewModel.setSelectedUser(it) }
     }
@@ -28,17 +28,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-//        if (binding?.storiesList?.itemDecorationCount == 0) {
-//            binding?.storiesList?.addItemDecoration(
-//                GridSpacingItemDecoration(
-//                    3,
-//                    2.dpToPx,
-//                    emptyList(),
-//                    includeEdge = false
-//                )
-//            )
-//        }
-//        binding?.storiesList?.layoutManager = GridLayoutManager(this, 3)
 
         sessionInteractor.checkPermission(this)
 
@@ -66,6 +55,14 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.refreshingData.observe(this) { isRefresh ->
             binding?.refreshLayout?.isRefreshing = isRefresh
         }
+    }
+
+    override fun onOpenProfileListener(profileId: Long) {
+        mainViewModel.goToProfileInstagram(profileId, this)
+    }
+
+    override fun onDeleteProfileListener(profileId: Long) {
+        mainViewModel.deleteProfile(profileId)
     }
 
     private fun setCurrentProfile(profile: Profile) {

@@ -36,25 +36,23 @@ class InstagramInteractorImpl(
         val storiesLoaded = mutableListOf<Stories>()
         instagramRepository.getProfilesSync().forEach { profile ->
             val oldStories = instagramRepository.getStories(profile.id).toMutableList()
-            if (System.currentTimeMillis() - profile.lastUpdate > 60 * 60 * 1000) {
+            if (System.currentTimeMillis() - profile.lastUpdate > LOAD_INTERVAL || allUpdate) {
                 val loadedStories = instagramRepository.loadActualStories(profile.id)
                 oldStories.addAll(loadedStories)
             }
 
             val storiesNotLoad = oldStories.distinctBy { it.id }.filter { it.localUri == "" }
-            CoroutineScope(Dispatchers.IO).launch {
-                storiesNotLoad.forEach { stories ->
-                    Log.e(TAG, "start download ${stories.id}")
-                    val pathDownloaded = downloadFile(stories.sourceMedia)
-                    pathDownloaded?.let { localUrl ->
-                        storiesLoaded.add(stories)
-                        instagramRepository.updateStoriesLocalUrl(stories.id, localUrl)
-                    }
-
-                    val status = if (pathDownloaded == null) "failed" else "success"
-
-                    Log.e(TAG, "$status download ${stories.id}")
+            storiesNotLoad.forEach { stories ->
+                Log.e(TAG, "start download ${stories.id}")
+                val pathDownloaded = downloadFile(stories.sourceMedia)
+                pathDownloaded?.let { localUrl ->
+                    storiesLoaded.add(stories)
+                    instagramRepository.updateStoriesLocalUrl(stories.id, localUrl)
                 }
+
+                val status = if (pathDownloaded == null) "failed" else "success"
+
+                Log.e(TAG, "$status download ${stories.id}")
             }
         }
         return@withContext storiesLoaded
@@ -92,6 +90,7 @@ class InstagramInteractorImpl(
     }
 
     companion object {
+        private const val LOAD_INTERVAL = 60 * 60 * 1000
         private const val TAG = "InstagramInteractorImpl"
     }
 }
