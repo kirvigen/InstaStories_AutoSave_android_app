@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.ui.selectUserScreen.adapterProfiles.ProfileAdapter
 import com.kirvigen.instagram.stories.autosave.databinding.ActivitySelectedProfilesBinding
+import com.kirvigen.instagram.stories.autosave.utils.AdapterAnyActionObserver
 import com.kirvigen.instagram.stories.autosave.utils.WrapContentGridLayoutManager
 import com.kirvigen.instagram.stories.autosave.utils.animateAlpha
 import com.kirvigen.instagram.stories.autosave.utils.hideKeyboard
@@ -54,7 +55,7 @@ class SelectedProfilesActivity : AppCompatActivity() {
             binding?.searchProfiles?.setText("")
         }
 
-        viewModel.profilesSearch.observe(this, { profilesList ->
+        viewModel.profilesSearch.observe(this) { profilesList ->
             if (profilesList.isEmpty() && adapterProfiles.getSelectedProfiles().isEmpty()) {
                 binding?.recyclerProfiles?.animateAlpha(0f)
                 binding?.descriptionFunction?.animateAlpha(1f)
@@ -66,33 +67,10 @@ class SelectedProfilesActivity : AppCompatActivity() {
             binding?.descSelected?.isVisible =
                 profilesList.isEmpty() && adapterProfiles.getSelectedProfiles().isNotEmpty()
             adapterProfiles.setData(profilesList)
-        })
+        }
 
-        adapterProfiles.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
-                super.onItemRangeChanged(positionStart, itemCount)
-                binding?.recyclerProfiles?.scrollToPosition(0)
-            }
-
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                binding?.recyclerProfiles?.scrollToPosition(0)
-            }
-
-            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-                super.onItemRangeRemoved(positionStart, itemCount)
-                binding?.recyclerProfiles?.scrollToPosition(0)
-            }
-
-            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-                super.onItemRangeMoved(fromPosition, toPosition, itemCount)
-                binding?.recyclerProfiles?.scrollToPosition(0)
-            }
-
-            override fun onStateRestorationPolicyChanged() {
-                super.onStateRestorationPolicyChanged()
-                binding?.recyclerProfiles?.scrollToPosition(0)
-            }
+        adapterProfiles.registerAdapterDataObserver(AdapterAnyActionObserver {
+            binding?.recyclerProfiles?.scrollToPosition(0)
         })
 
         binding?.searchProfiles?.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
@@ -105,7 +83,6 @@ class SelectedProfilesActivity : AppCompatActivity() {
             binding?.searchProfiles?.requestFocus()
             binding?.searchProfiles.showKeyboard()
         }
-
     }
 
     private fun initBtnSuccess() {

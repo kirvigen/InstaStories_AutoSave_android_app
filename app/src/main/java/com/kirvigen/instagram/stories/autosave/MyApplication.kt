@@ -7,7 +7,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.kirvigen.instagram.stories.autosave.ui.ViewModuleCreater
-import com.kirvigen.instagram.stories.autosave.workers.CheckerWorker
+import com.kirvigen.instagram.stories.autosave.workers.InstagramStoriesWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -28,7 +28,7 @@ class MyApplication : Application() {
             )
         }
 
-        CheckerWorker.planningWorkers(applicationContext)
+        InstagramStoriesWorker.planningWorkers(applicationContext)
     }
 
     private fun createChannel(channelId: String, channelName: String) {

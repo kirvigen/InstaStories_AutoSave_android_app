@@ -5,11 +5,13 @@ import android.view.View
 import com.kirvigen.instagram.stories.autosave.R
 
 class MenuProfileCreator(
+    private val profileName: String,
     private val profileId: Long,
     private val menuProfileCallbacks: MenuProfileCallbacks
 ): View.OnCreateContextMenuListener {
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        menu?.setHeaderTitle(profileName)
         menu?.add(R.string.go_to_instagram)?.setOnMenuItemClickListener {
             menuProfileCallbacks.onOpenProfileListener(profileId)
             return@setOnMenuItemClickListener true

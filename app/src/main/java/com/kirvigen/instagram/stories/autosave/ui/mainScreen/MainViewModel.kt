@@ -86,7 +86,7 @@ class MainViewModel(
 
     fun deleteProfile(profileId: Long) {
         launch {
-            instagramRepository.deleteProfile(profileId)
+            instagramInteractor.deleteUserData(profileId)
         }
     }
 

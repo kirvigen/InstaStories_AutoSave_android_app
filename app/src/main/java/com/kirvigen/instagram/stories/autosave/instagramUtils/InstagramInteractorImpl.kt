@@ -11,9 +11,9 @@ import com.thin.downloadmanager.DownloadStatusListenerV1
 import com.thin.downloadmanager.ThinDownloadManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -28,7 +28,26 @@ class InstagramInteractorImpl(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
-    override fun savedSelectedProfile(list: List<Profile>) {
+    override fun deleteUserData(profileId: Long) {
+        launch {
+            val storiesProfile = instagramRepository.getStories(profileId)
+            instagramRepository.deleteProfile(profileId)
+            storiesProfile.forEach { stories ->
+                val fdelete = File(stories.localUri)
+                if (fdelete.exists()) {
+                    if (fdelete.delete()) {
+                        instagramRepository.deleteStories(stories.id)
+                        Log.e(TAG, "file Deleted :" + stories.localUri)
+                    } else {
+                        Log.e(TAG, "file not Deleted :" + stories.localUri)
+                    }
+                }
+            }
+
+        }
+    }
+
+    override suspend fun savedSelectedProfile(list: List<Profile>) {
         instagramRepository.saveProfiles(list)
     }
 

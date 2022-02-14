@@ -10,6 +10,7 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.AdapterListProfilesWithStories
 import com.kirvigen.instagram.stories.autosave.ui.selectUserScreen.SelectedProfilesResultCallback
 import com.kirvigen.instagram.stories.autosave.user.SessionInteractor
+import com.kirvigen.instagram.stories.autosave.utils.AdapterAnyActionObserver
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -20,8 +21,14 @@ class MainActivity : AppCompatActivity(), MenuProfileCreator.MenuProfileCallback
     private val sessionInteractor: SessionInteractor by inject()
     private var binding: ActivityMainBinding? = null
     private val mainAdapter: AdapterListProfilesWithStories = AdapterListProfilesWithStories(this)
-    private val searchOtherProfiles = registerForActivityResult(SelectedProfilesResultCallback()) { profile ->
-        profile?.let { mainViewModel.setSelectedUser(it) }
+    private val searchOtherProfiles = registerForActivityResult(SelectedProfilesResultCallback()) { profiles ->
+        profiles?.let {
+            mainViewModel.setSelectedUser(it)
+            mainAdapter.registerAdapterDataObserver(AdapterAnyActionObserver { adapterObserver ->
+                binding?.storiesList?.scrollToPosition(0)
+                mainAdapter.unregisterAdapterDataObserver(adapterObserver)
+            })
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

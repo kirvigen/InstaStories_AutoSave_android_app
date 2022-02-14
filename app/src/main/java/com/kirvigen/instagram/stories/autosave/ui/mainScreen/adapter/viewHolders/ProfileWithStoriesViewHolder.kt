@@ -21,8 +21,8 @@ class ProfileWithStoriesViewHolder(
         binding.emptyStories.isVisible = item.storiesList.isEmpty()
         binding.recyclerStories.adapter = StoriesInCardAdapter(item.storiesList)
 
-        binding.root.setOnCreateContextMenuListener(
-            MenuProfileCreator(item.id, menuProfileCallbacks)
+        binding.container.setOnCreateContextMenuListener(
+            MenuProfileCreator(item.name, item.id, menuProfileCallbacks)
         )
 
         while (binding.recyclerStories.itemDecorationCount != 0) {

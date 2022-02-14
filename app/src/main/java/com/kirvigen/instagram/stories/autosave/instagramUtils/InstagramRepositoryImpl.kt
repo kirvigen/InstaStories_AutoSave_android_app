@@ -70,7 +70,9 @@ class InstagramRepositoryImpl(
 
     override fun getStoriesUser(userId: Long): LiveData<List<Stories>> = storiesDao.getStoriesProfile(userId)
 
-    override suspend fun getStories(profileId: Long) = storiesDao.getStoriesProfileSync(profileId)
+    override suspend fun getStories(profileId: Long): List<Stories> = storiesDao.getStoriesProfileSync(profileId)
+
+    override suspend fun deleteStories(storiesId: Long) = storiesDao.deleteStories(storiesId)
 
     override suspend fun updateStoriesLocalUrl(storiesId: Long, localUrl: String) {
         storiesDao.updateStoriesLocalUri(storiesId, localUrl)
@@ -167,10 +169,8 @@ class InstagramRepositoryImpl(
 
     override fun getStories(): LiveData<List<Stories>> = storiesDao.getAllStories()
 
-    override fun saveProfiles(profiles: List<Profile>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            profileDao.insert(profiles.map { it.copy(insertTime = System.currentTimeMillis()) })
-        }
+    override suspend fun saveProfiles(profiles: List<Profile>) {
+        profileDao.insert(profiles.map { it.copy(insertTime = System.currentTimeMillis()) })
     }
 
     override suspend fun getProfilesSync(): List<Profile> = profileDao.getProfilesSync()

@@ -9,19 +9,15 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
-import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
-import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.utils.NotificationUtils
 import com.kirvigen.instagram.stories.autosave.utils.loadBitmap
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class CheckerWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
+class InstagramStoriesWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
 
     private val instagramInteractor by inject(InstagramInteractor::class.java)
 
@@ -37,8 +33,12 @@ class CheckerWorker(context: Context, params: WorkerParameters) : CoroutineWorke
         val stories = listStories.first()
 
         return suspendCoroutine { ret ->
-            applicationContext.loadBitmap(stories.localUri) {
-                NotificationUtils.createNotificationImage(applicationContext, it, text)
+            applicationContext.loadBitmap(stories.localUri) { bitmap ->
+                if (bitmap != null) {
+                    NotificationUtils.createNotificationImage(applicationContext, bitmap, text)
+                } else {
+                    NotificationUtils.createNotification(applicationContext, text)
+                }
                 ret.resume(Result.success())
             }
         }
@@ -53,7 +53,7 @@ class CheckerWorker(context: Context, params: WorkerParameters) : CoroutineWorke
                 .build()
 
             val refreshCpnWork =
-                PeriodicWorkRequest.Builder(CheckerWorker::class.java, 60, TimeUnit.MINUTES, 50, TimeUnit.MINUTES)
+                PeriodicWorkRequest.Builder(InstagramStoriesWorker::class.java, 60, TimeUnit.MINUTES, 50, TimeUnit.MINUTES)
                     .setConstraints(myConstraints)
                     .addTag(TAG_WORKER)
                     .build()

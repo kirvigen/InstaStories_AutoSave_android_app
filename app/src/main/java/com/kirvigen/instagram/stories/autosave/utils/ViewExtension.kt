@@ -95,13 +95,17 @@ fun View?.showKeyboard() {
     inputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
 }
 
-fun Context?.loadBitmap(url: String, callback: (Bitmap) -> Unit) {
+fun Context?.loadBitmap(url: String, callback: (Bitmap?) -> Unit) {
     Glide.with(this ?: return)
         .asBitmap()
         .load(url)
         .into(object : SimpleTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 callback(resource)
+            }
+
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                callback(null)
             }
         });
 }

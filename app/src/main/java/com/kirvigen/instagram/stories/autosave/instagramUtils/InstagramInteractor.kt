@@ -5,8 +5,10 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 
 interface InstagramInteractor {
 
+    fun deleteUserData(profileId: Long)
+
     suspend fun loadStoriesForAllProfile(allUpdate: Boolean = false): List<Stories>
 
-    fun savedSelectedProfile(list: List<Profile>)
+    suspend fun savedSelectedProfile(list: List<Profile>)
 
 }

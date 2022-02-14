@@ -21,7 +21,7 @@ interface InstagramRepository {
 
     fun getStories(): LiveData<List<Stories>>
 
-    fun saveProfiles(profiles: List<Profile>)
+    suspend fun saveProfiles(profiles: List<Profile>)
 
     suspend fun getProfilesSync(): List<Profile>
 
@@ -32,6 +32,8 @@ interface InstagramRepository {
     suspend fun updateStoriesLocalUrl(storiesId: Long, localUrl: String)
 
     suspend fun getStories(profileId: Long): List<Stories>
+
+    suspend fun deleteStories(storiesId: Long)
 
     suspend fun getProfile(stories: Stories): Profile?
 

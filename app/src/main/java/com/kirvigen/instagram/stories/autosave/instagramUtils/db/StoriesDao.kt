@@ -16,6 +16,9 @@ interface StoriesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(profile: Stories)
 
+    @Query("DELETE FROM `stories` WHERE id = :storiesId")
+    suspend fun deleteStories(storiesId: Long)
+
     @Query("UPDATE `stories` SET `localUri` = :localUrl WHERE id = :storiesId")
     suspend fun updateStoriesLocalUri(storiesId: Long, localUrl: String)
 
@@ -27,4 +30,5 @@ interface StoriesDao {
 
     @Query("SELECT * FROM stories ORDER BY `date` DESC")
     fun getAllStories(): LiveData<List<Stories>>
+
 }
