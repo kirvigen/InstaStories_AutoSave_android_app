@@ -12,7 +12,7 @@ object ViewModuleCreater {
 
     fun create() = module {
         viewModel { MainViewModel(get(), get(), get()) }
-        viewModel { (stories: Stories) -> StoriesViewModule(stories, get()) }
+        viewModel { (stories: Stories) -> StoriesViewModule(stories, get(), get()) }
         viewModel { (stories: Stories) -> ViewerStoriesViewModel(stories, get()) }
         viewModel { SelectedProfilesViewModel(get()) }
     }

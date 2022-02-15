@@ -1,9 +1,13 @@
 package com.kirvigen.instagram.stories.autosave.utils
 
+import android.app.Activity
 import android.app.Notification
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.kirich1409.androidnotificationdsl.NotificationPriority
@@ -41,7 +45,8 @@ class NotificationUtils {
             context: Context,
             text: String,
             notificationId: Int = 1000,
-            title: String = "Автоматическое уведомление"
+            title: String = "Автоматическое уведомление",
+            pendingIntent: PendingIntent? = null
         ) {
             val notificationManager = ContextCompat.getSystemService(
                 context,
@@ -52,9 +57,19 @@ class NotificationUtils {
                 contentTitle = title
                 contentText = text
                 priority = NotificationPriority.DEFAULT
+                contentIntent = pendingIntent
             }
 
             notificationManager.notify(notificationId, notification)
+        }
+
+        inline fun <reified T : Activity> createPendingIntentActivity(context: Context): PendingIntent {
+            val intent = Intent(context, T::class.java)
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            } else {
+                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            }
         }
     }
 }

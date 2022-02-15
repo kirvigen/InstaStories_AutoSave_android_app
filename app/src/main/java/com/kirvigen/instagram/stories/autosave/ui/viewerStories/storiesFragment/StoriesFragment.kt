@@ -2,6 +2,7 @@ package com.kirvigen.instagram.stories.autosave.ui.viewerStories.storiesFragment
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,10 @@ import com.kirvigen.instagram.stories.autosave.utils.animateAlpha
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class StoriesFragment : Fragment() {
 
@@ -38,7 +43,9 @@ class StoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.profile.observe(viewLifecycleOwner) { profile ->
-            binding?.profileTitle?.text = profile.name
+            val simpleDateFormat = SimpleDateFormat("d MMM в HH:mm", Locale.getDefault())
+            val date = " • " + simpleDateFormat.format(Date((stories?.date ?: return@observe) * 1000))
+            binding?.profileTitle?.text = "${profile.name} $date"
             binding?.profileImage?.loadImage(profile.photo, false)
         }
 
@@ -55,6 +62,13 @@ class StoriesFragment : Fragment() {
             setVideo(urlContent ?: return)
         } else {
             setImage(urlContent ?: return)
+        }
+
+        binding?.share?.setOnClickListener {
+            stories?.let { stories -> viewModel.shareStory(stories, context ?: return@let) }
+        }
+        binding?.saveToGallery?.setOnClickListener {
+            stories?.let { stories -> viewModel.saveToGallery(stories, context ?: return@let) }
         }
     }
 

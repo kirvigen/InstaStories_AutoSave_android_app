@@ -25,13 +25,15 @@ interface InstagramRepository {
 
     suspend fun getProfilesSync(): List<Profile>
 
+    suspend fun getStoriesSync(): List<Stories>
+
     suspend fun searchProfile(searchText: String): List<Profile>
 
     suspend fun loadActualStories(userId: Long): List<Stories>
 
     suspend fun updateStoriesLocalUrl(storiesId: Long, localUrl: String)
 
-    suspend fun getStories(profileId: Long): List<Stories>
+    suspend fun getStoriesProfile(profileId: Long): List<Stories>
 
     suspend fun deleteStories(storiesId: Long)
 

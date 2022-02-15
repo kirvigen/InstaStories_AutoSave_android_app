@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), MenuProfileCreator.MenuProfileCallback
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        sessionInteractor.checkPermission(this)
+        sessionInteractor.checkPermissionBattery(this)
 
         binding?.storiesList?.adapter = mainAdapter
 

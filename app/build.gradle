@@ -72,17 +72,17 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     //viewModel lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
 
     //roomDb
-    kapt 'androidx.room:room-compiler:2.4.0'
-    implementation 'androidx.room:room-ktx:2.4.0'
+    kapt 'androidx.room:room-compiler:2.4.1'
+    implementation 'androidx.room:room-ktx:2.4.1'
 
     //Gson
     implementation 'com.google.code.gson:gson:2.8.9'
 
     //lifecycle scope
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.1"
 
     //ExoPlayer
     implementation 'com.google.android.exoplayer:exoplayer-core:2.16.1'
@@ -109,6 +109,6 @@ dependencies {
     // Core functionality
     implementation 'com.github.kirich1409:android-notification-dsl-core:0.2.1'
 
-    // Extentions to simoplify work
+    // Extensions to simplify work with notification
     implementation 'com.github.kirich1409:android-notification-dsl-extensions:0.2.1'
 }

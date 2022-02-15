@@ -9,6 +9,7 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
+import com.kirvigen.instagram.stories.autosave.ui.welcomeScreen.WelcomeActivity
 import com.kirvigen.instagram.stories.autosave.utils.NotificationUtils
 import com.kirvigen.instagram.stories.autosave.utils.loadBitmap
 import kotlinx.coroutines.launch
@@ -22,7 +23,8 @@ class InstagramStoriesWorker(context: Context, params: WorkerParameters) : Corou
     private val instagramInteractor by inject(InstagramInteractor::class.java)
 
     override suspend fun doWork(): Result {
-        NotificationUtils.createNotification(applicationContext, "Стартуем загружать истории")
+        val pendingIntent = NotificationUtils.createPendingIntentActivity<WelcomeActivity>(applicationContext)
+        NotificationUtils.createNotification(applicationContext, "Стартуем загружать истории", pendingIntent = pendingIntent)
         val listStories = instagramInteractor.loadStoriesForAllProfile(true)
         if (listStories.isEmpty()) {
             NotificationUtils.createNotification(applicationContext, "Новых историй не обнаружено")
@@ -37,7 +39,7 @@ class InstagramStoriesWorker(context: Context, params: WorkerParameters) : Corou
                 if (bitmap != null) {
                     NotificationUtils.createNotificationImage(applicationContext, bitmap, text)
                 } else {
-                    NotificationUtils.createNotification(applicationContext, text)
+                    NotificationUtils.createNotification(applicationContext, text, pendingIntent = pendingIntent)
                 }
                 ret.resume(Result.success())
             }

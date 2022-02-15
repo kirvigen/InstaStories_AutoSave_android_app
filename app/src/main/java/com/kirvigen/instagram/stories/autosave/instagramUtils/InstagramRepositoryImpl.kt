@@ -70,7 +70,7 @@ class InstagramRepositoryImpl(
 
     override fun getStoriesUser(userId: Long): LiveData<List<Stories>> = storiesDao.getStoriesProfile(userId)
 
-    override suspend fun getStories(profileId: Long): List<Stories> = storiesDao.getStoriesProfileSync(profileId)
+    override suspend fun getStoriesProfile(profileId: Long): List<Stories> = storiesDao.getStoriesProfileSync(profileId)
 
     override suspend fun deleteStories(storiesId: Long) = storiesDao.deleteStories(storiesId)
 
@@ -174,6 +174,8 @@ class InstagramRepositoryImpl(
     }
 
     override suspend fun getProfilesSync(): List<Profile> = profileDao.getProfilesSync()
+
+    override suspend fun getStoriesSync(): List<Stories> = storiesDao.getAllStoriesSync()
 
     private fun getInstagramHeaders(): Map<String, String> {
         val typeOfMap: Type = object : TypeToken<Map<String, String>>() {}.type

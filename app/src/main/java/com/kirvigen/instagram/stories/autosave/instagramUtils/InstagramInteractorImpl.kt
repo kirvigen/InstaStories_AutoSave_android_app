@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
+import com.kirvigen.instagram.stories.autosave.utils.getNameFile
 import com.thin.downloadmanager.DefaultRetryPolicy
 import com.thin.downloadmanager.DownloadRequest
 import com.thin.downloadmanager.DownloadStatusListenerV1
@@ -30,7 +31,7 @@ class InstagramInteractorImpl(
 
     override fun deleteUserData(profileId: Long) {
         launch {
-            val storiesProfile = instagramRepository.getStories(profileId)
+            val storiesProfile = instagramRepository.getStoriesProfile(profileId)
             instagramRepository.deleteProfile(profileId)
             storiesProfile.forEach { stories ->
                 val fdelete = File(stories.localUri)
@@ -52,9 +53,10 @@ class InstagramInteractorImpl(
     }
 
     override suspend fun loadStoriesForAllProfile(allUpdate: Boolean): List<Stories> = withContext(Dispatchers.IO) {
+        checkingAllFilesExists()
         val storiesLoaded = mutableListOf<Stories>()
         instagramRepository.getProfilesSync().forEach { profile ->
-            val oldStories = instagramRepository.getStories(profile.id).toMutableList()
+            val oldStories = instagramRepository.getStoriesProfile(profile.id).toMutableList()
             if (System.currentTimeMillis() - profile.lastUpdate > LOAD_INTERVAL || allUpdate) {
                 val loadedStories = instagramRepository.loadActualStories(profile.id)
                 oldStories.addAll(loadedStories)
@@ -78,7 +80,7 @@ class InstagramInteractorImpl(
     }
 
     private suspend fun downloadFile(url: String): String? = suspendCoroutine { ret ->
-        val name = url.split("?")[0].split("/")[url.split("/").size - 1]
+        val name = getNameFile(url)
         val destinationUri = Uri.parse(context.externalCacheDir.toString() + "/$name")
         val request = DownloadRequest(Uri.parse(url))
             .setRetryPolicy(DefaultRetryPolicy())
@@ -106,6 +108,20 @@ class InstagramInteractorImpl(
                 }
             })
         downloadManager.add(request)
+    }
+
+    private suspend fun checkingAllFilesExists() = withContext(Dispatchers.IO) {
+        Log.e(TAG, "Start checking local files")
+        val listStories = instagramRepository.getStoriesSync()
+        listStories.forEach { stories ->
+            if (stories.localUri.isNotEmpty()) {
+                val file = File(stories.localUri)
+                if (!file.exists()) {
+                    instagramRepository.updateStoriesLocalUrl(stories.id, "")
+                }
+            }
+        }
+        Log.e(TAG, "Finish checking local files")
     }
 
     companion object {

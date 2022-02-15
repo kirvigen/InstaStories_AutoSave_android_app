@@ -31,4 +31,6 @@ interface StoriesDao {
     @Query("SELECT * FROM stories ORDER BY `date` DESC")
     fun getAllStories(): LiveData<List<Stories>>
 
+    @Query("SELECT * FROM stories ORDER BY `date` DESC")
+    suspend fun getAllStoriesSync(): List<Stories>
 }

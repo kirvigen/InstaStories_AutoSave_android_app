@@ -15,9 +15,13 @@
     <string name="using_search_subtitle">Найдите аккаунты, для которых хотите создать свой личный архив историй</string>
     <string name="dialog_permissions_denied_head">Выйдайте разрешение</string>
     <string name="dialog_permissions_battery_denied_body">Добавте приложение в исключение при оптимизации батареи. Чтобы истории пользователей смогли сохранятся в фоновом режием</string>
+    <string name="dialog_permissions_file_write_body">Чтобы созранить историю в галерею, нужно выдать разрешение на запись файлов</string>
     <string name="btn_title_battery_permission_dialog">Дать разрешение</string>
     <string name="empty_stories">Нет загруженных историй (</string>
     <string name="all_stories">Все истории</string>
+    <string name="cancel">Отмена</string>
     <string name="delete">Удалить</string>
     <string name="go_to_instagram">Открыть в Instagram</string>
+    <string name="error_save_to_gallary">Не удалось сохранить в галерею</string>
+    <string name="saved">Сохранено!</string>
 </resources>
