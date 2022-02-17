@@ -3,7 +3,7 @@ package com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.viewHolder
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.kirvigen.instagram.stories.autosave.databinding.ItemProfileWithStoriesBinding
-import com.kirvigen.instagram.stories.autosave.ui.mainScreen.MenuProfileCreator
+import com.kirvigen.instagram.stories.autosave.base.MenuProfileCreator
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.StoriesInCardAdapter
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.ProfileWithStoriesItem
 import com.kirvigen.instagram.stories.autosave.utils.MarginItemDecoration

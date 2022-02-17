@@ -5,6 +5,7 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.kirvigen.instagram.stories.autosave.R
+import com.kirvigen.instagram.stories.autosave.base.MenuProfileCreator
 import com.kirvigen.instagram.stories.autosave.databinding.ActivityMainBinding
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.AdapterListProfilesWithStories

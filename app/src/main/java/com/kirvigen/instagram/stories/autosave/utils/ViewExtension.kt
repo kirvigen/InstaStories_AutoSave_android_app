@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
@@ -108,4 +109,19 @@ fun Context?.loadBitmap(url: String, callback: (Bitmap?) -> Unit) {
                 callback(null)
             }
         });
+}
+
+private const val CLICK_DELAY_MILLIS = 1000L
+
+fun View?.setThrottleOnClickListener(callback: (view: View) -> Unit) {
+    var lastClickTime = 0L
+
+    this?.setOnClickListener {
+        val currentTimeMillis = System.currentTimeMillis()
+
+        if (currentTimeMillis - lastClickTime > CLICK_DELAY_MILLIS) {
+            lastClickTime = currentTimeMillis
+            callback.invoke(it)
+        }
+    }
 }

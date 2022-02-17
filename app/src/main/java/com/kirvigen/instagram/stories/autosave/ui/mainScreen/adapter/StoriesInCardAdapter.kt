@@ -9,7 +9,6 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.GoToAllItem
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.viewHolders.StoriesGoToAllViewHolder
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.viewHolders.StoriesProfileViewHolder
-import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapterStories.viewHolders.StoriesViewHolder
 
 class StoriesInCardAdapter(private val items: List<Any>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -25,6 +24,7 @@ class StoriesInCardAdapter(private val items: List<Any>) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as? StoriesProfileViewHolder)?.bind((items[position] as? Stories) ?: return)
+        (holder as? StoriesGoToAllViewHolder)?.bind((items[position] as? GoToAllItem) ?: return)
     }
 
     override fun getItemCount(): Int = items.size

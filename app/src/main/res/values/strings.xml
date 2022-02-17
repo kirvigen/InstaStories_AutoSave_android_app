@@ -24,4 +24,6 @@
     <string name="go_to_instagram">Открыть в Instagram</string>
     <string name="error_save_to_gallary">Не удалось сохранить в галерею</string>
     <string name="saved">Сохранено!</string>
+    <string name="save_gallery_load">Сохранение в галерею…</string>
+    <string name="open_profile">Открыть профиль</string>
 </resources>

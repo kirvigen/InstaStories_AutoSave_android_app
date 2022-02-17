@@ -15,13 +15,14 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.utils.dpToPx
 import com.kirvigen.instagram.stories.autosave.utils.setTransparentStatusBar
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class ViewerStoriesActivity : AppCompatActivity() {
 
     private var binding: ActivityViewerStoriesBinding? = null
     private val stories: Stories? by lazy { intent.getParcelableExtra(STORIES_KEY) }
-    private val viewModel: ViewerStoriesViewModel by inject { parametersOf(stories) }
+    private val viewModel: ViewerStoriesViewModel by viewModel { parametersOf(stories) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,36 +44,11 @@ class ViewerStoriesActivity : AppCompatActivity() {
             return@setOnApplyWindowInsetsListener insets
         }
 
-        viewModel.storiesData.observe(this, { storiesList ->
+        viewModel.storiesData.observe(this) { storiesList ->
             val position = storiesList.indexOf(stories)
             binding?.viewPager?.adapter = StoriesPagerAdapter(this, storiesList)
             binding?.viewPager?.setCurrentItem(position, false)
-        })
-//
-//        val onThumbTouch: OnTouchListener = object : OnTouchListener {
-//            var previouspoint = 0f
-//            var startPoint = 0f
-//            override fun onTouch(v: View, event: MotionEvent): Boolean {
-//                when (v.id) {
-//                    R.id.tvDetailsalaujairiyat -> when (event.action) {
-//                        MotionEvent.ACTION_DOWN -> {
-//                            startPoint = event.x
-//                            println("Action down,..." + event.x)
-//                        }
-//                        MotionEvent.ACTION_MOVE -> {}
-//                        MotionEvent.ACTION_CANCEL -> {
-//                            previouspoint = event.x
-//                            if (previouspoint > startPoint) {
-//                                //Right side swipe
-//                            } else {
-//                                // Left side swipe
-//                            }
-//                        }
-//                    }
-//                }
-//                return true
-//            }
-//        }
+        }
     }
 
 

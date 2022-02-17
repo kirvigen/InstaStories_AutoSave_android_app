@@ -46,7 +46,7 @@ class MainViewModel(
                 } else {
                     (filteredStories.subList(0, 5).toMutableList() as? MutableList<Any>)
                         ?.apply {
-                            add(GoToAllItem())
+                            add(GoToAllItem(profile))
                         }?.toList() ?: emptyList()
                 }
                 add(

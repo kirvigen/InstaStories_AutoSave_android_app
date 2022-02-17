@@ -16,4 +16,8 @@ data class Stories(
     val date: Long,
     val preview: String,
     val localUri: String = ""
-):Parcelable
+) : Parcelable {
+
+    val previewUrl: String
+        get() = if (localUri == "") preview else localUri
+}

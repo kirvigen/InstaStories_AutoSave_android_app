@@ -30,6 +30,7 @@ class StoriesViewModule(
 ) : ViewModel() {
 
     val profile: MutableLiveData<Profile> = MutableLiveData()
+    val savedLoader: MutableLiveData<Boolean> = MutableLiveData(false)
 
     init {
         viewModelScope.launch {

@@ -33,6 +33,7 @@ class InstagramInteractorImpl(
         launch {
             val storiesProfile = instagramRepository.getStoriesProfile(profileId)
             instagramRepository.deleteProfile(profileId)
+
             storiesProfile.forEach { stories ->
                 val fdelete = File(stories.localUri)
                 if (fdelete.exists()) {
@@ -55,7 +56,7 @@ class InstagramInteractorImpl(
     override suspend fun loadStoriesForAllProfile(allUpdate: Boolean): List<Stories> = withContext(Dispatchers.IO) {
         checkingAllFilesExists()
         val storiesLoaded = mutableListOf<Stories>()
-        instagramRepository.getProfilesSync().forEach { profile ->
+        instagramRepository.getProfilesSync().reversed().forEach { profile ->
             val oldStories = instagramRepository.getStoriesProfile(profile.id).toMutableList()
             if (System.currentTimeMillis() - profile.lastUpdate > LOAD_INTERVAL || allUpdate) {
                 val loadedStories = instagramRepository.loadActualStories(profile.id)

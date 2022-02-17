@@ -1,0 +1,63 @@
+package com.kirvigen.instagram.stories.autosave.ui.viewerProfile
+
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.kirvigen.instagram.stories.autosave.databinding.ActivityProfileViewerBinding
+import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
+import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.adapterStories.StoriesAdapter
+import com.kirvigen.instagram.stories.autosave.utils.GridSpacingItemDecoration
+import com.kirvigen.instagram.stories.autosave.utils.WrapContentGridLayoutManager
+import com.kirvigen.instagram.stories.autosave.utils.dpToPx
+import com.kirvigen.instagram.stories.autosave.utils.loadImage
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+
+class ProfileViewerActivity : AppCompatActivity() {
+
+    private val profileId by lazy { intent.getLongExtra(PROFILE_EXTRA, -1) }
+    private val viewModel: ViewerProfileViewModel by viewModel { parametersOf(profileId) }
+    private var binding: ActivityProfileViewerBinding? = null
+    private val adapterStories = StoriesAdapter()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityProfileViewerBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+
+        if (binding?.recyclerStories?.itemDecorationCount == 0) {
+            binding?.recyclerStories?.addItemDecoration(
+                GridSpacingItemDecoration(
+                    COUNT_GRID_COLUMN,
+                    PADDING_STORIES.dpToPx,
+                    emptyList(),
+                    includeEdge = false
+                )
+            )
+        }
+
+        binding?.recyclerStories?.layoutManager = WrapContentGridLayoutManager(this, COUNT_GRID_COLUMN)
+        binding?.recyclerStories?.adapter = adapterStories
+
+        viewModel.storiesData.observe(this) { listStories ->
+            adapterStories.submitStories(listStories)
+        }
+        viewModel.profileData.observe(this) { profile ->
+            binding?.profileImage?.loadImage(profile?.photo ?: "")
+            binding?.profileTitle?.text = profile?.nickname ?: ""
+        }
+    }
+
+    companion object {
+        private const val COUNT_GRID_COLUMN = 3
+        private const val PADDING_STORIES = 2
+        private const val PROFILE_EXTRA = "profile"
+
+        fun openProfile(profileId: Long, context: Context) {
+            val intent = Intent(context, ProfileViewerActivity::class.java)
+            intent.putExtra(PROFILE_EXTRA, profileId)
+            context.startActivity(intent)
+        }
+    }
+}

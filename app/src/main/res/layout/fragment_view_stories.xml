@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="6dp">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="6dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp">
 
@@ -70,12 +70,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
-            android:layout_marginBottom="32dp">
+            android:layout_marginBottom="16dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/save_to_gallery"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                android:layout_marginEnd="16dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
@@ -97,16 +98,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/date"
-            style="@style/FontRegular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/white_50"
-            tools:text="20 января 2020" />
-
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="40dp"
@@ -114,6 +105,31 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
+        <LinearLayout
+            android:id="@+id/loading_block"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:background="@color/black_50"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
+            <ProgressBar
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/save_gallery_load"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>
+
+

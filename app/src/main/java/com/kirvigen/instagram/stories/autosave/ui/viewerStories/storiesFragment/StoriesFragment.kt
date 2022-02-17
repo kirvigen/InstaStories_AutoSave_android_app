@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -17,8 +18,11 @@ import com.kirvigen.instagram.stories.autosave.databinding.FragmentViewStoriesBi
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.utils.animateAlpha
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -45,8 +49,11 @@ class StoriesFragment : Fragment() {
         viewModel.profile.observe(viewLifecycleOwner) { profile ->
             val simpleDateFormat = SimpleDateFormat("d MMM в HH:mm", Locale.getDefault())
             val date = " • " + simpleDateFormat.format(Date((stories?.date ?: return@observe) * 1000))
-            binding?.profileTitle?.text = "${profile.name} $date"
+            binding?.profileTitle?.text = "${profile.nickname} $date"
             binding?.profileImage?.loadImage(profile.photo, false)
+        }
+        viewModel.savedLoader.observe(viewLifecycleOwner) {
+            setBlockScreen(it)
         }
 
         binding?.playerView?.isVisible = stories?.isVideo ?: false
@@ -70,6 +77,24 @@ class StoriesFragment : Fragment() {
         binding?.saveToGallery?.setOnClickListener {
             stories?.let { stories -> viewModel.saveToGallery(stories, context ?: return@let) }
         }
+
+    }
+
+    private fun setBlockScreen(block: Boolean) {
+        if (block) {
+            binding?.loadingBlock?.isVisible = true
+        }
+        binding?.loadingBlock?.animateAlpha(if (block) 1f else 0f) {
+            if (!block) {
+                binding?.loadingBlock?.isVisible = false
+            }
+        }
+
+        val alphaCommonElement = if (block) 0f else 1f
+        binding?.share?.animateAlpha(alphaCommonElement)
+        binding?.saveToGallery?.animateAlpha(alphaCommonElement)
+        binding?.profileImage?.animateAlpha(alphaCommonElement)
+        binding?.profileTitle?.animateAlpha(alphaCommonElement)
     }
 
     private fun setImage(source: String) {

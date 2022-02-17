@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kirvigen.instagram.stories.autosave.databinding.ItemProfileWithStoriesBinding
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
-import com.kirvigen.instagram.stories.autosave.ui.mainScreen.MenuProfileCreator
+import com.kirvigen.instagram.stories.autosave.base.MenuProfileCreator
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.ProfileWithStoriesItem
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.viewHolders.ProfileWithStoriesViewHolder
 

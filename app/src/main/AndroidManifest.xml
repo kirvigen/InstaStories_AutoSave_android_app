@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InstStoriesAutoSave">
         <activity
+            android:name=".ui.viewerProfile.ProfileViewerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.selectUserScreen.SelectedProfilesActivity"
             android:exported="false" />
         <activity
@@ -54,8 +57,8 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.kirvigen.instagram.stories.autosave.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />
