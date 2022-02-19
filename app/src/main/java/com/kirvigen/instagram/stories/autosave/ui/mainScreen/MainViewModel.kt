@@ -123,6 +123,6 @@ class MainViewModel(
     }
 
     companion object {
-        private const val COUNT_VISIBLE_STORIES = 5
+        private const val COUNT_VISIBLE_STORIES = 4
     }
 }
