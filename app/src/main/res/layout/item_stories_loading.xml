@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ShimmerStyle"
+    android:layout_width="@dimen/stories_width_small"
+    android:layout_height="@dimen/stories_height_small">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_16"
+        android:scaleType="centerCrop" />
+
+</com.facebook.shimmer.ShimmerFrameLayout>

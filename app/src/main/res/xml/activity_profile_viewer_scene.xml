@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint android:id="@+id/current_profile" />
+        <Constraint
+            android:id="@+id/profile_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:translationZ="0dp"
+            android:layout_marginTop="16dp" />
+        <Constraint
+            android:id="@+id/profile_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/profile_image"
+            app:layout_constraintLeft_toLeftOf="@id/profile_image"
+            app:layout_constraintRight_toRightOf="@id/profile_image"
+            android:translationZ="8dp"
+            android:layout_marginTop="4dp" />
+        <Constraint
+            android:id="@+id/count_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/profile_title"
+            app:layout_constraintLeft_toLeftOf="@id/profile_title"
+            app:layout_constraintRight_toRightOf="@id/profile_title"
+            android:layout_marginTop="8dp" />
+        <Constraint
+            android:id="@+id/date_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/count_info"
+            app:layout_constraintLeft_toLeftOf="@id/count_info"
+            app:layout_constraintRight_toRightOf="@id/count_info" />
+        <Constraint
+            android:id="@+id/bg_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:alpha="0"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/recycler_stories"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bg_shadow" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint android:id="@id/current_profile" />
+        <Constraint
+            android:id="@+id/profile_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/bg_shadow"
+            android:translationZ="8dp"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/bg_shadow" />
+        <Constraint
+            android:id="@+id/bg_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:alpha="1"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/date_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/count_info"
+            app:layout_constraintLeft_toLeftOf="@id/count_info"
+            app:layout_constraintRight_toRightOf="@id/count_info"
+            android:alpha="0" />
+        <Constraint
+            android:id="@+id/count_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/profile_title"
+            app:layout_constraintLeft_toLeftOf="@id/profile_title"
+            app:layout_constraintRight_toRightOf="@id/profile_title"
+            android:layout_marginTop="8dp" />
+        <Constraint
+            android:id="@+id/profile_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/profile_image"
+            app:layout_constraintLeft_toLeftOf="@id/profile_image"
+            app:layout_constraintRight_toRightOf="@id/profile_image"
+            android:translationZ="8dp"
+            android:layout_marginTop="4dp"
+            android:alpha="0" />
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@+id/start" >
+        <OnSwipe app:touchAnchorId="@+id/recycler_stories" />
+        <KeyFrameSet >
+            <KeyAttribute
+                app:motionTarget="@+id/bg_shadow"
+                app:framePosition="50"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/count_info"
+                app:framePosition="20"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/date_info"
+                app:framePosition="20"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/count_info"
+                app:framePosition="100"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/profile_title"
+                app:framePosition="65"
+                android:alpha="0" />
+            <KeyAttribute
+                app:motionTarget="@+id/profile_image"
+                app:framePosition="50"
+                android:translationZ="6dp" />
+        </KeyFrameSet>
+    </Transition>
+</MotionScene>

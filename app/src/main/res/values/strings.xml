@@ -26,4 +26,13 @@
     <string name="saved">Сохранено!</string>
     <string name="save_gallery_load">Сохранение в галерею…</string>
     <string name="open_profile">Открыть профиль</string>
+
+    <plurals name="story_count">
+        <item quantity="one">Загружена %d история</item>
+        <item quantity="two">Загружено %d истории</item>
+        <item quantity="few">Загружено %d истории</item>
+        <item quantity="other">Загружено %d историй</item>
+    </plurals>
+
+    <string name="date_stories_border">В период с %s по %s</string>
 </resources>

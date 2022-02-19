@@ -9,7 +9,8 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteracto
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepositoryImpl
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
-import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.GoToAllItem
+import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.GoToProfile
+import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.LoadingStoriesItem
 import com.kirvigen.instagram.stories.autosave.utils.getStringFromMapString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,13 +42,20 @@ class MainViewModel(
         return@combineWith mutableListOf<ProfileWithStoriesItem>().apply {
             profiles?.reversed()?.forEach { profile ->
                 val filteredStories = stories?.filter { it.userId == profile.id } ?: emptyList()
-                val storiesMapped: List<Any> = if (filteredStories.size < COUNT_VISIBLE_STORIES) {
+                var storiesMapped: List<Any> = if (filteredStories.size < COUNT_VISIBLE_STORIES) {
                     filteredStories
                 } else {
                     (filteredStories.subList(0, 5).toMutableList() as? MutableList<Any>)
                         ?.apply {
-                            add(GoToAllItem(profile))
+                            add(GoToProfile(profile))
                         }?.toList() ?: emptyList()
+                }
+                if (storiesMapped.isEmpty() && profile.lastUpdate == 0L) {
+                    val loadingItems = mutableListOf<LoadingStoriesItem>()
+                    for (i in 0..5) {
+                        loadingItems.add(LoadingStoriesItem())
+                    }
+                    storiesMapped = loadingItems
                 }
                 add(
                     ProfileWithStoriesItem(
@@ -75,7 +83,7 @@ class MainViewModel(
 
     fun goToProfileInstagram(profileId: Long, context: Context) {
         launch {
-            val url =  InstagramRepositoryImpl.INSTAGRAM_MAIN_URL + instagramRepository.getProfile(profileId)?.nickname
+            val url = InstagramRepositoryImpl.INSTAGRAM_MAIN_URL + instagramRepository.getProfile(profileId)?.nickname
             val i = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(url)
             context.startActivity(i)

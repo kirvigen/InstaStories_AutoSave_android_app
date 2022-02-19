@@ -6,9 +6,11 @@ import com.kirvigen.instagram.stories.autosave.databinding.ItemProfileWithStorie
 import com.kirvigen.instagram.stories.autosave.base.MenuProfileCreator
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.StoriesInCardAdapter
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.ProfileWithStoriesItem
+import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.ProfileViewerActivity
 import com.kirvigen.instagram.stories.autosave.utils.MarginItemDecoration
 import com.kirvigen.instagram.stories.autosave.utils.MarginParamsDp
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
+import com.kirvigen.instagram.stories.autosave.utils.setThrottleOnClickListener
 
 class ProfileWithStoriesViewHolder(
     private val binding: ItemProfileWithStoriesBinding,
@@ -24,6 +26,10 @@ class ProfileWithStoriesViewHolder(
         binding.container.setOnCreateContextMenuListener(
             MenuProfileCreator(item.name, item.id, menuProfileCallbacks)
         )
+
+        binding.container.setThrottleOnClickListener {
+            ProfileViewerActivity.openProfile(item.id, it.context)
+        }
 
         while (binding.recyclerStories.itemDecorationCount != 0) {
             binding.recyclerStories.removeItemDecorationAt(0)

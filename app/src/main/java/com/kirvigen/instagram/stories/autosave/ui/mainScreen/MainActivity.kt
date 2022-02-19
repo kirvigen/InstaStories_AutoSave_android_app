@@ -13,6 +13,7 @@ import com.kirvigen.instagram.stories.autosave.ui.selectUserScreen.SelectedProfi
 import com.kirvigen.instagram.stories.autosave.user.SessionInteractor
 import com.kirvigen.instagram.stories.autosave.utils.AdapterAnyActionObserver
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
+import com.kirvigen.instagram.stories.autosave.utils.setThrottleOnClickListener
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -54,7 +55,15 @@ class MainActivity : AppCompatActivity(), MenuProfileCreator.MenuProfileCallback
             toColor(R.color.insta_color_4),
             toColor(R.color.insta_color_5)
         )
+
+        binding?.currentProfileContainer?.setThrottleOnClickListener {
+            binding?.currentProfileContainer?.showContextMenuForChild(it)
+        }
+
         mainViewModel.currentProfile.observe(this) { profile ->
+            binding?.currentProfileContainer?.setOnCreateContextMenuListener(
+                MenuProfileCreator(profile.nickname, profile.id, this)
+            )
             setCurrentProfile(profile)
         }
         mainViewModel.mainList.observe(this@MainActivity) { items ->

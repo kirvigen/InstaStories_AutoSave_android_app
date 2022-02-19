@@ -1,10 +1,14 @@
 package com.kirvigen.instagram.stories.autosave.ui.viewerProfile
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramInteractor
 import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepository
+import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepositoryImpl
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
 import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.adapterStories.data.StoriesViewData
@@ -40,6 +44,16 @@ class ViewerProfileViewModel(
         }
     }
 
-    fun deleteUser() {
+    fun goToProfileInstagram(profileId: Long, context: Context) {
+        viewModelScope.launch {
+            val url = InstagramRepositoryImpl.INSTAGRAM_MAIN_URL + instagramRepository.getProfile(profileId)?.nickname
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            context.startActivity(i)
+        }
+    }
+
+    suspend fun deleteProfile(profileId: Long) {
+        instagramInteractor.deleteUserData(profileId)
     }
 }

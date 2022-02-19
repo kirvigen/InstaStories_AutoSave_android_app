@@ -6,6 +6,7 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.39114583333333336" />
         <entry key="app/src/main/res/drawable/background_date.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/bg_gray_circle.xml" value="0.2984375" />
+        <entry key="app/src/main/res/drawable/bg_gray_corner_angle.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/bg_outline_search.xml" value="0.2984375" />
         <entry key="app/src/main/res/drawable/bg_outline_webview.xml" value="0.29384615384615387" />
         <entry key="app/src/main/res/drawable/btn_accent_bg.xml" value="0.3921875" />
@@ -16,8 +17,8 @@
         <entry key="app/src/main/res/drawable/ic_play_icon.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/ic_round_person_add_24.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/item_profile_with_stories.xml" value="0.2984375" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.23263224984066283" />
-        <entry key="app/src/main/res/layout/activity_profile_viewer.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.6716688098992566" />
+        <entry key="app/src/main/res/layout/activity_profile_viewer.xml" value="0.2911694510739857" />
         <entry key="app/src/main/res/layout/activity_selected_profiles.xml" value="0.22577692315670486" />
         <entry key="app/src/main/res/layout/activity_viewer_stories.xml" value="0.3619791666666667" />
         <entry key="app/src/main/res/layout/activity_web_insta_auth.xml" value="0.3608026542758781" />
@@ -26,7 +27,8 @@
         <entry key="app/src/main/res/layout/item_profile.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/item_profile_with_stories.xml" value="0.23777173913043478" />
         <entry key="app/src/main/res/layout/item_stories.xml" value="0.21875" />
-        <entry key="app/src/main/res/layout/item_stories_match_parent.xml" value="0.9542540957118737" />
+        <entry key="app/src/main/res/layout/item_stories_loading.xml" value="0.1509451615182977" />
+        <entry key="app/src/main/res/layout/item_stories_match_parent.xml" value="0.19600830078124998" />
         <entry key="app/src/main/res/layout/item_view_all_stories.xml" value="0.192481884057971" />
         <entry key="app/src/main/res/menu/menu_profile.xml" value="0.28229166666666666" />
       </map>

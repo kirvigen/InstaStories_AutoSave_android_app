@@ -14,7 +14,6 @@
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
-
     </style>
 
     <style name="Theme.InstStoriesAutoSave.ViewerStories" parent="@style/Theme.InstStoriesAutoSave">
@@ -24,6 +23,11 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="WindowAnimationStyle">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
     </style>
 
     <style name="ShadowStyle">
@@ -41,6 +45,11 @@
         <item name="android:fontFamily">@font/san_francisco_bold</item>
         <item name="fontFamily">@font/san_francisco_bold</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ShimmerStyle">
+        <item name="shimmer_auto_start">true</item>
+        <item name="shimmer_duration">1500</item>
     </style>
 
 </resources>

@@ -18,15 +18,12 @@ data class MarginParamsDp(
 
 class MarginItemDecoration(
     private val marginParams: MarginParamsDp,
-    private val viewType: Int = 0,
     private val position: Int = -1,
     private val positionDisable: Array<Int> = arrayOf()
 ) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
-        val adapter = parent.adapter
-        val itemViewType = adapter?.getItemViewType(itemPosition)
-        if (itemViewType != viewType || itemPosition in positionDisable) return
+        if (itemPosition in positionDisable) return
 
         if (position != -1) {
             if (position == itemPosition)

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="stories_height">220dp</dimen>
+    <dimen name="stories_height_small">140dp</dimen>
+    <dimen name="stories_width_small">100dp</dimen>
+</resources>

@@ -126,7 +126,7 @@ class InstagramInteractorImpl(
     }
 
     companion object {
-        private const val LOAD_INTERVAL = 60 * 60 * 1000
+        private const val LOAD_INTERVAL = 0
         private const val TAG = "InstagramInteractorImpl"
     }
 }

@@ -210,10 +210,15 @@ class InstagramRepositoryImpl(
                     item.getJSONArray("video_versions")
                         .getJSONObject(0).getString("url")
                 } else {
-                    item.getJSONObject("image_versions2")
+                    val contents = item.getJSONObject("image_versions2")
                         .getJSONArray("candidates")
-                        .getJSONObject(0)
-                        .getString("url")
+                    val firstUrl = contents.getJSONObject(0).getString("url")
+                    if (firstUrl.contains(".webp")) {
+                        contents.getJSONObject(1).getString("url")
+                    } else {
+                        firstUrl
+                    }
+
                 }
 
                 result.add(

@@ -45,7 +45,7 @@ class ViewerStoriesActivity : AppCompatActivity() {
         }
 
         viewModel.storiesData.observe(this) { storiesList ->
-            val position = storiesList.indexOf(stories)
+            val position = storiesList.indexOfFirst { it.id == stories?.id }
             binding?.viewPager?.adapter = StoriesPagerAdapter(this, storiesList)
             binding?.viewPager?.setCurrentItem(position, false)
         }
