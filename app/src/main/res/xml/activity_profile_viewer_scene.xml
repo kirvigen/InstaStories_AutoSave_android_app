@@ -42,8 +42,9 @@
             android:id="@+id/bg_shadow"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:alpha="0"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:alpha="1"
+            app:layout_constraintTop_toTopOf="parent"
+            android:translationZ="-5dp" />
         <Constraint
             android:id="@+id/recycler_stories"
             android:layout_width="match_parent"
@@ -105,8 +106,8 @@
         <KeyFrameSet >
             <KeyAttribute
                 app:motionTarget="@+id/bg_shadow"
-                app:framePosition="50"
-                android:alpha="0" />
+                app:framePosition="60"
+                android:alpha="1" />
             <KeyAttribute
                 app:motionTarget="@+id/count_info"
                 app:framePosition="20"
@@ -127,6 +128,14 @@
                 app:motionTarget="@+id/profile_image"
                 app:framePosition="50"
                 android:translationZ="6dp" />
+            <KeyAttribute
+                app:motionTarget="@+id/bg_shadow"
+                app:framePosition="77"
+                android:translationZ="-5dp" />
+            <KeyAttribute
+                app:motionTarget="@+id/bg_shadow"
+                app:framePosition="55"
+                android:alpha="0.5" />
         </KeyFrameSet>
     </Transition>
 </MotionScene>

@@ -9,6 +9,15 @@
     app:layoutDescription="@xml/activity_profile_viewer_scene"
     tools:context=".ui.viewerProfile.ViewerProfileActivity">
 
+    <View
+        android:id="@+id/bg_shadow"
+        style="@style/ShadowStyle"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:alpha="0"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/back"
         android:layout_width="45dp"
@@ -82,15 +91,6 @@
         app:layout_constraintRight_toRightOf="@id/count_info"
         app:layout_constraintTop_toBottomOf="@id/count_info"
         tools:text="В период с 20.10.2020" />
-
-    <View
-        android:id="@+id/bg_shadow"
-        style="@style/ShadowStyle"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:alpha="0"
-        android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_stories"
