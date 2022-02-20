@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     app:layoutDescription="@xml/activity_profile_viewer_scene"
-    tools:context=".ui.viewerProfile.ProfileViewerActivity">
+    tools:context=".ui.viewerProfile.ViewerProfileActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/back"

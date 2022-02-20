@@ -6,7 +6,7 @@ import com.kirvigen.instagram.stories.autosave.databinding.ItemProfileWithStorie
 import com.kirvigen.instagram.stories.autosave.base.MenuProfileCreator
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.StoriesInCardAdapter
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.ProfileWithStoriesItem
-import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.ProfileViewerActivity
+import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.ViewerProfileActivity
 import com.kirvigen.instagram.stories.autosave.utils.MarginItemDecoration
 import com.kirvigen.instagram.stories.autosave.utils.MarginParamsDp
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
@@ -28,7 +28,7 @@ class ProfileWithStoriesViewHolder(
         )
 
         binding.container.setThrottleOnClickListener {
-            ProfileViewerActivity.openProfile(item.id, it.context)
+            ViewerProfileActivity.openProfile(item.id, it.context)
         }
 
         while (binding.recyclerStories.itemDecorationCount != 0) {

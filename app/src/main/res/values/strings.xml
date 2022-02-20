@@ -35,4 +35,8 @@
     </plurals>
 
     <string name="date_stories_border">В период с %s по %s</string>
+    <string name="video">Видео</string>
+    <string name="statistics">Статистика</string>
+    <string name="photo">Изображения</string>
+    <string name="using_memory">Использования памяти</string>
 </resources>

@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "InstStories AutoSave"
 include ':app'
+include ':circlegraph'

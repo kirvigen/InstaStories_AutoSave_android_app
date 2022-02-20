@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.base.MenuProfileCreator
 import com.kirvigen.instagram.stories.autosave.databinding.ActivityProfileViewerBinding
-import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.adapterStories.StoriesAdapter
 import com.kirvigen.instagram.stories.autosave.utils.GridSpacingItemDecoration
 import com.kirvigen.instagram.stories.autosave.utils.WrapContentGridLayoutManager
@@ -23,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class ProfileViewerActivity : AppCompatActivity(), MenuProfileCreator.MenuProfileCallbacks {
+class ViewerProfileActivity : AppCompatActivity(), MenuProfileCreator.MenuProfileCallbacks {
 
     private val profileId by lazy { intent.getLongExtra(PROFILE_EXTRA, -1) }
     private val viewModel: ViewerProfileViewModel by viewModel { parametersOf(profileId) }
@@ -92,7 +90,7 @@ class ProfileViewerActivity : AppCompatActivity(), MenuProfileCreator.MenuProfil
         private const val PROFILE_EXTRA = "profile"
 
         fun openProfile(profileId: Long, context: Context) {
-            val intent = Intent(context, ProfileViewerActivity::class.java)
+            val intent = Intent(context, ViewerProfileActivity::class.java)
             intent.putExtra(PROFILE_EXTRA, profileId)
             context.startActivity(intent)
         }

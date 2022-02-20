@@ -3,7 +3,7 @@ package com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.viewHolder
 import androidx.recyclerview.widget.RecyclerView
 import com.kirvigen.instagram.stories.autosave.databinding.ItemViewAllStoriesBinding
 import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.data.GoToProfile
-import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.ProfileViewerActivity
+import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.ViewerProfileActivity
 import com.kirvigen.instagram.stories.autosave.utils.setThrottleOnClickListener
 
 class StoriesGoToAllViewHolder(
@@ -12,7 +12,7 @@ class StoriesGoToAllViewHolder(
 
     fun bind(item: GoToProfile) {
         binding.container.setThrottleOnClickListener {
-            ProfileViewerActivity.openProfile(item.profile.id, it.context)
+            ViewerProfileActivity.openProfile(item.profile.id, it.context)
         }
     }
 }

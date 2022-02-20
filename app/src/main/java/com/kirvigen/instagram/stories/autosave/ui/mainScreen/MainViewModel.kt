@@ -45,7 +45,7 @@ class MainViewModel(
                 var storiesMapped: List<Any> = if (filteredStories.size < COUNT_VISIBLE_STORIES) {
                     filteredStories
                 } else {
-                    (filteredStories.subList(0, 5).toMutableList() as? MutableList<Any>)
+                    (filteredStories.subList(0, COUNT_VISIBLE_STORIES).toMutableList() as? MutableList<Any>)
                         ?.apply {
                             add(GoToProfile(profile))
                         }?.toList() ?: emptyList()

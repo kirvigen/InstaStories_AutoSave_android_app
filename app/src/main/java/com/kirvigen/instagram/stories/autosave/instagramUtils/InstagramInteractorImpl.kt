@@ -35,14 +35,16 @@ class InstagramInteractorImpl(
             instagramRepository.deleteProfile(profileId)
 
             storiesProfile.forEach { stories ->
-                val fdelete = File(stories.localUri)
-                if (fdelete.exists()) {
-                    if (fdelete.delete()) {
+                val file = File(stories.localUri)
+                if (file.exists()) {
+                    if (file.delete()) {
                         instagramRepository.deleteStories(stories.id)
                         Log.e(TAG, "file Deleted :" + stories.localUri)
                     } else {
                         Log.e(TAG, "file not Deleted :" + stories.localUri)
                     }
+                } else {
+                    instagramRepository.deleteStories(stories.id)
                 }
             }
 

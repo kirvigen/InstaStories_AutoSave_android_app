@@ -3,7 +3,7 @@ package com.kirvigen.instagram.stories.autosave.base
 import android.view.ContextMenu
 import android.view.View
 import com.kirvigen.instagram.stories.autosave.R
-import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.ProfileViewerActivity
+import com.kirvigen.instagram.stories.autosave.ui.viewerProfile.ViewerProfileActivity
 
 class MenuProfileCreator(
     private val profileName: String,
@@ -16,7 +16,7 @@ class MenuProfileCreator(
         menu?.setHeaderTitle(profileName)
         if (isOpenProfileEnable) {
             menu?.add(R.string.open_profile)?.setOnMenuItemClickListener {
-                ProfileViewerActivity.openProfile(profileId, v?.context ?: return@setOnMenuItemClickListener true)
+                ViewerProfileActivity.openProfile(profileId, v?.context ?: return@setOnMenuItemClickListener true)
                 return@setOnMenuItemClickListener true
             }
         }

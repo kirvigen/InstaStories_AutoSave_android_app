@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,7 +15,8 @@
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@color/gray_16" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/go_to_profile"
@@ -40,7 +42,8 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/profile_image"
         app:layout_constraintStart_toEndOf="@id/profile_image"
-        app:layout_constraintTop_toTopOf="@id/profile_image" />
+        app:layout_constraintTop_toTopOf="@id/profile_image"
+        tools:text="kir_vigen" />
 
     <TextView
         android:id="@+id/emptyStories"
