@@ -12,7 +12,6 @@ import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
 import com.afollestad.materialdialogs.MaterialDialog
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -118,7 +117,7 @@ class SessionInteractorImpl(
     private fun showDialogBatteryPermissionsDenied(context: Context, onClick: () -> Unit) {
         MaterialDialog(context).show {
             title(R.string.dialog_permissions_denied_head)
-            message(R.string.dialog_permissions_battery_denied_body)
+            message(R.string.dialog_permissions_denied_body)
             cancelable(false)
             positiveButton(R.string.btn_title_battery_permission_dialog) {
                 onClick.invoke()
