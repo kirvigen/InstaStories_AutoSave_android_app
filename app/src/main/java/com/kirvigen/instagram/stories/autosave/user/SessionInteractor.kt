@@ -8,7 +8,7 @@ interface SessionInteractor {
     fun saveAuthCookies(cookie: String)
     fun saveAuthHeaders(headers: Map<String, String>)
     fun getCurrentProfile(): Profile?
-    fun checkPermissionBattery(context: Context)
+    fun checkPermission(context: Context)
     fun isAuth(): Boolean
 
     suspend fun checkPermissionFileWrite(context: Context): Boolean

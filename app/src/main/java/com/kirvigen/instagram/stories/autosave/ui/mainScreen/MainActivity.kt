@@ -1,12 +1,9 @@
 package com.kirvigen.instagram.stories.autosave.ui.mainScreen
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import circlegraph.velmurugan.com.circlegraph.CircleItems
-import circlegraph.velmurugan.com.circlegraph.CircleType
 import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.base.MenuProfileCreator
 import com.kirvigen.instagram.stories.autosave.base.MenuSessionCreator
@@ -16,7 +13,6 @@ import com.kirvigen.instagram.stories.autosave.ui.mainScreen.adapter.AdapterList
 import com.kirvigen.instagram.stories.autosave.ui.selectUserScreen.SelectedProfilesResultCallback
 import com.kirvigen.instagram.stories.autosave.user.SessionInteractor
 import com.kirvigen.instagram.stories.autosave.utils.AdapterAnyActionObserver
-import com.kirvigen.instagram.stories.autosave.utils.dpToPx
 import com.kirvigen.instagram.stories.autosave.utils.loadImage
 import com.kirvigen.instagram.stories.autosave.utils.setThrottleOnClickListener
 import org.koin.android.ext.android.inject
@@ -43,7 +39,7 @@ class MainActivity : AppCompatActivity(), MenuProfileCreator.MenuProfileCallback
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        sessionInteractor.checkPermissionBattery(this)
+        sessionInteractor.checkPermission(this)
 
         binding?.storiesList?.adapter = mainAdapter
 

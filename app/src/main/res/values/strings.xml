@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InstStories AutoSave</string>
+    <string name="app_name">ArchiverStories</string>
     <string name="web_auth_head_title">Если будет кнопка «Сохранить данные», нажмите её. Это необходимо для работы приложения</string>
     <string name="auth_success">Вход выполнен</string>
     <string name="loading_auth">Выполняется вход…</string>

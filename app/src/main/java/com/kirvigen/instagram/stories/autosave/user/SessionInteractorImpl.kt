@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.karumi.dexter.Dexter
@@ -24,6 +25,9 @@ import com.kirvigen.instagram.stories.autosave.instagramUtils.InstagramRepositor
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.utils.toJson
 import com.kirvigen.instagram.stories.autosave.utils.toObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -51,26 +55,29 @@ class SessionInteractorImpl(
     }
 
     @SuppressLint("BatteryLife")
-    override fun checkPermissionBattery(context: Context) {
+    override fun checkPermission(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
         val packageName: String = context.packageName
         val pm = context.getSystemService(POWER_SERVICE) as PowerManager?
-        if (pm?.isIgnoringBatteryOptimizations(packageName) == false) {
+        if (pm?.isIgnoringBatteryOptimizations(packageName) == false
+            || !checkWriteExternalStorage(context)
+        ) {
             showDialogBatteryPermissionsDenied(context) {
                 val intent = Intent()
                 intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
                 intent.data = Uri.parse("package:$packageName")
                 context.startActivity(intent)
+                CoroutineScope(Dispatchers.Main).launch {
+                    if (!getPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        checkPermission(context)
+                    }
+                }
             }
         }
     }
 
     override suspend fun checkPermissionFileWrite(context: Context): Boolean = suspendCoroutine { ret ->
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (checkWriteExternalStorage(context)) {
             ret.resume(true)
             return@suspendCoroutine
         }
@@ -79,24 +86,34 @@ class SessionInteractorImpl(
                 ret.resume(false)
                 return@showDialogFilePermissionsDenied
             }
-            Dexter.withContext(context)
-                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(object : PermissionListener {
-                    override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                        ret.resume(true)
-                    }
-
-                    override fun onPermissionDenied(response: PermissionDeniedResponse) {
-                        ret.resume(false)
-                    }
-
-                    override fun onPermissionRationaleShouldBeShown(
-                        permission: PermissionRequest?,
-                        token: PermissionToken?
-                    ) {
-                    }
-                }).check()
+            CoroutineScope(Dispatchers.Main).launch {
+                ret.resume(getPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            }
         }
+    }
+
+    private suspend fun getPermission(context: Context, permission: String): Boolean = suspendCoroutine { ret ->
+        Dexter.withContext(context)
+            .withPermission(permission)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(response: PermissionGrantedResponse) {
+                    Log.e(this::class.simpleName, "Granted permission $permission")
+                    ret.resume(true)
+                }
+
+                override fun onPermissionDenied(response: PermissionDeniedResponse) {
+                    Log.e(this::class.simpleName, "Denied permission $permission")
+                    ret.resume(false)
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permission: PermissionRequest?,
+                    token: PermissionToken?
+                ) {
+                    Log.e(this::class.simpleName, "RationaleShouldBeShown permission $permission")
+                    token?.continuePermissionRequest()
+                }
+            }).check()
     }
 
     private fun showDialogFilePermissionsDenied(context: Context, onClick: (Boolean) -> Unit) {
@@ -128,5 +145,11 @@ class SessionInteractorImpl(
 
     companion object {
         private const val CURRENT_PROFILE_KEY = "current_profile_key"
+
+        fun checkWriteExternalStorage(context: Context): Boolean =
+            ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
     }
 }

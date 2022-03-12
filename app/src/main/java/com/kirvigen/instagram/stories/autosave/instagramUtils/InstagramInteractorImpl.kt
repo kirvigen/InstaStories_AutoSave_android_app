@@ -2,9 +2,12 @@ package com.kirvigen.instagram.stories.autosave.instagramUtils
 
 import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import android.util.Log
+import com.kirvigen.instagram.stories.autosave.R
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Profile
 import com.kirvigen.instagram.stories.autosave.instagramUtils.data.Stories
+import com.kirvigen.instagram.stories.autosave.user.SessionInteractorImpl
 import com.kirvigen.instagram.stories.autosave.utils.getNameFile
 import com.thin.downloadmanager.DefaultRetryPolicy
 import com.thin.downloadmanager.DownloadRequest
@@ -57,6 +60,7 @@ class InstagramInteractorImpl(
 
     override suspend fun loadStoriesForAllProfile(allUpdate: Boolean): List<Stories> = withContext(Dispatchers.IO) {
         checkingAllFilesExists()
+        val pathSaver = getPathSaver(context)
         val storiesLoaded = mutableListOf<Stories>()
         instagramRepository.getProfilesSync().reversed().forEach { profile ->
             val oldStories = instagramRepository.getStoriesProfile(profile.id).toMutableList()
@@ -68,7 +72,7 @@ class InstagramInteractorImpl(
             val storiesNotLoad = oldStories.distinctBy { it.id }.filter { it.localUri == "" }
             storiesNotLoad.forEach { stories ->
                 Log.e(TAG, "start download ${stories.id}")
-                val pathDownloaded = downloadFile(stories.sourceMedia)
+                val pathDownloaded = downloadFile(stories.sourceMedia, pathSaver)
                 pathDownloaded?.let { localUrl ->
                     storiesLoaded.add(stories)
                     instagramRepository.updateStoriesLocalUrl(stories.id, localUrl)
@@ -82,9 +86,9 @@ class InstagramInteractorImpl(
         return@withContext storiesLoaded
     }
 
-    private suspend fun downloadFile(url: String): String? = suspendCoroutine { ret ->
+    private suspend fun downloadFile(url: String, pathSave: String): String? = suspendCoroutine { ret ->
         val name = getNameFile(url)
-        val destinationUri = Uri.parse(context.externalCacheDir.toString() + "/$name")
+        val destinationUri = Uri.parse("$pathSave$name")
         val request = DownloadRequest(Uri.parse(url))
             .setRetryPolicy(DefaultRetryPolicy())
             .setDestinationURI(destinationUri)
@@ -125,6 +129,20 @@ class InstagramInteractorImpl(
             }
         }
         Log.e(TAG, "Finish checking local files")
+    }
+
+    private fun getPathSaver(context: Context): String {
+        return context.externalCacheDir.toString()
+//        if (!SessionInteractorImpl.checkWriteExternalStorage(context)) {
+//            return context.externalCacheDir.toString()
+//        }
+//        var path = Environment.getExternalStorageDirectory().toString()
+//        path += "/${context.getString(R.string.app_name)}/"
+//        val file = File(path)
+//        if (!file.exists()) {
+//            file.mkdir()
+//        }
+//        return path
     }
 
     companion object {
