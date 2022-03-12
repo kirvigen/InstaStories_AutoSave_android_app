@@ -1,3 +1,3 @@
 # AutoSaver Instagram stories
-<video>../video_preview.mov</video>
+<video>video_preview.mov</video>
 
