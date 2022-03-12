@@ -1,6 +1,6 @@
 # AutoSaver Instagram stories
 
-##Stack:
+## Stack:
 - MVVM
 - Kotlin
 - Retrofit2
