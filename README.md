@@ -9,7 +9,7 @@
 - RoomDb
 - Glide
 - kotlin-coroutines 
-- Closed Instagram Api
+- Closed Instagram API
 
 ## Preview
 [<img src="preview_3.png" alt="drawing" width="200"/>]()
